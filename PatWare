@@ -1,4 +1,4 @@
-print("Patware Loading\n")
+print("Patware Loading")
 
 --Locals
 local oldTick = tick()
