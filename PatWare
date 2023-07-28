@@ -334,15 +334,7 @@ local OreConnection = OreUpdater:Connect(function()
     Esp:UpdateOreEsp()
 end)
 ]]
---Init Functions
-for i, v in pairs(getupvalues(getrenv()._G.modules.Player.GetPlayerModel)[1]) do
-    if not table.find(cache,v) then
-        table.insert(cache,v)
-        Esp:CreateEsp(v)
-    end
-end
 
---[[
 for i,v in pairs(getrenv()._G.modules.Entity.List) do
     if table.find(AllowedOres,v.typ) and not table.find(OreCache,v) then
         table.insert(OreCache,v)
