@@ -1,2170 +1,1921 @@
+
+-- This file waslura.ph obfuscated, and was deobfuscated by Astral
+-- Meaning some features may not work.
 --[[
-                                  $$\           $$\                           $$\        $$$$$$\              $$\                     $$\        $$$$$$\                                          $$\                         
-                              \__|          $$ |                          $$ |      $$  __$$\             $$ |                    $$ |      $$  __$$\                                         $$ |                        
- $$$$$$\   $$$$$$\  $$$$$$$\  $$\  $$$$$$$\ $$$$$$$\   $$$$$$\   $$$$$$\  $$ |  $$\ $$ /  $$ |       $$$$$$$ | $$$$$$\   $$$$$$\  $$$$$$$\  $$ /  \__|$$\   $$\  $$$$$$$\  $$$$$$$\ $$$$$$\ $$$$$$\    $$$$$$\   $$$$$$\  
-$$  __$$\  \____$$\ $$  __$$\ $$ |$$  _____|$$  __$$\ $$  __$$\ $$  __$$\ $$ | $$  |\$$$$$$$ |      $$  __$$ |$$  __$$\ $$  __$$\ $$  __$$\ $$$$\     $$ |  $$ |$$  _____|$$  _____|\____$$\\_$$  _|  $$  __$$\ $$  __$$\ 
-$$ /  $$ | $$$$$$$ |$$ |  $$ |$$ |$$ /      $$ |  $$ |$$ /  $$ |$$ /  $$ |$$$$$$  /  \____$$ |      $$ /  $$ |$$$$$$$$ |$$ /  $$ |$$ |  $$ |$$  _|    $$ |  $$ |\$$$$$$\  $$ /      $$$$$$$ | $$ |    $$ /  $$ |$$ |  \__|
-$$ |  $$ |$$  __$$ |$$ |  $$ |$$ |$$ |      $$ |  $$ |$$ |  $$ |$$ |  $$ |$$  _$$<  $$\   $$ |      $$ |  $$ |$$   ____|$$ |  $$ |$$ |  $$ |$$ |      $$ |  $$ | \____$$\ $$ |     $$  __$$ | $$ |$$\ $$ |  $$ |$$ |      
-$$$$$$$  |\$$$$$$$ |$$ |  $$ |$$ |\$$$$$$$\ $$ |  $$ |\$$$$$$  |\$$$$$$  |$$ | \$$\ \$$$$$$  |      \$$$$$$$ |\$$$$$$$\ \$$$$$$  |$$$$$$$  |$$ |      \$$$$$$  |$$$$$$$  |\$$$$$$$\\$$$$$$$ | \$$$$  |\$$$$$$  |$$ |      
-$$  ____/  \_______|\__|  \__|\__| \_______|\__|  \__| \______/  \______/ \__|  \__| \______/        \_______| \_______| \______/ \_______/ \__|       \______/ \_______/  \_______|\_______|  \____/  \______/ \__|      
-$$ |                                                                                                                                                                                                                      
-$$ |                                                                                                                                                                                                                      
-\__|                                                                                                                                                                                                                      
-]]
+█▀▀█ █▀▀ ▀▀█▀▀ █▀▀█ █▀▀█ █── 　 █▀▀█ █──█ █▀▀▄ █── ─▀─ █▀▀ 　 █▀▀▄ █▀▀ █▀▀█ █▀▀▄ █▀▀ 
+█▄▄█ ▀▀█ ──█── █▄▄▀ █▄▄█ █── 　 █──█ █──█ █▀▀▄ █── ▀█▀ █── 　 █──█ █▀▀ █──█ █▀▀▄ █▀▀ 
+▀──▀ ▀▀▀ ──▀── ▀─▀▀ ▀──▀ ▀▀▀ 　 █▀▀▀ ─▀▀▀ ▀▀▀─ ▀▀▀ ▀▀▀ ▀▀▀ 　 ▀▀▀─ ▀▀▀ ▀▀▀▀ ▀▀▀─ ▀──
+]] --
 
-if not LPH_OBFUSCATED then
-	LPH_JIT = function(...)
-		return ...
-	end
-	LPH_JIT_MAX = function(...)
-		return ...
-	end
-	LPH_JIT_ULTRA = function(...)
-		return ...
-	end
-	LPH_NO_VIRTUALIZE = function(...)
-		return ...
-	end
-	LPH_NO_UPVALUES = function(f)
-		return function(...)
-			return f(...)
+
+return (function(...)
+	task.spawn(function()
+		OldTick = tick();
+		CrumbleWare = "3.4";
+		if not game:IsLoaded() then
+			game.Loaded:Wait();
 		end
-	end
-	LPH_ENCSTR = function(...)
-		return ...
-	end
-	LPH_STRENC = function(...)
-		return ...
-	end
-	LPH_HOOK_FIX = function(...)
-		return ...
-	end
-	LPH_CRASH = function()
-		return print(debug.traceback())
-	end
-end
-
-local wrap = LPH_NO_VIRTUALIZE(function(f)
-	coroutine.resume(coroutine.create(f))
-end)
-
--- BYPASS 2
-local antihitbox
-antihitbox = hookmetamethod(
-	game,
-	"__index",
-	newcclosure(function(...)
-		local self, k = ...
-		if not checkcaller() and k == "Size" and self.Name == "Head" then
-			return Vector3.new(1.67225, 0.835624, 0.835624)
+		if (not syn or not protectgui) then
+			(getgenv()).protectgui = function()
+			end;
 		end
-		return antihitbox(...)
-	end)
-)
-warn("[ASTRAL DEV] Full-Hitbox Bypass Loaded Success")
-
--- Full Server Side Bypass
-local index
-index = hookmetamethod(
-	game,
-	"__index",
-	newcclosure(LPH_NO_VIRTUALIZE(function(obj, idx)
-		if index(obj, "Name") == "Leaves" and idx == "Transparency" then
-			return 0.4
-		end
-		if index(obj, "Name") == "Terrain" and idx == "Decoration" then
-			return true
-		end
-		if index(obj, "Name") == "PlayerHitHeadshot" and idx == "SoundId" then
-			return "rbxassetid://9119561046"
-		end
-		if index(obj, "Name") == "PlayerHitHeadshot" and idx == "Volume" then
-			return 2
-		end
-		if index(obj, "Name") == "PlayerHit" and idx == "SoundId" then
-			return "rbxassetid://9114487369"
-		end
-		if index(obj, "Name") == "PlayerHit" and idx == "Volume" then
-			return 2
-		end
-		return index(obj, idx)
-	end))
-)
-
-local config = Instance.new("Folder")
-config.Name = "Monkey"
-config.Parent = workspace
-
-local OreESPAdornee = Instance.new("Folder")
-OreESPAdornee.Name = "OreESPAdornee"
-OreESPAdornee.Parent = workspace:WaitForChild("Monkey")
-
-local PlayerESPAdornee = Instance.new("Folder")
-PlayerESPAdornee.Name = "PlayerESPAdornee"
-PlayerESPAdornee.Parent = workspace:WaitForChild("Monkey")
-
-local TotemESPAdornee = Instance.new("Folder")
-TotemESPAdornee.Name = "TotemESPAdornee"
-TotemESPAdornee.Parent = workspace:WaitForChild("Monkey")
-
-local StorageESPAdornee = Instance.new("Folder")
-StorageESPAdornee.Name = "StorageESPAdornee"
-StorageESPAdornee.Parent = workspace:WaitForChild("Monkey")
-local oldTick = tick()
-local Camera = game:GetService("Workspace").CurrentCamera
-local CharcaterMiddle = game:GetService("Workspace").Ignore.LocalCharacter.Middle
-local Mouse = game.Players.LocalPlayer:GetMouse()
-local Sky = game:GetService("Lighting"):FindFirstChildOfClass("Sky")
-if not Sky then
-	Sky = Instance.new("Sky", Lighting)
-end
-
--- Globals
-local _Network = getrenv()._G.modules.Network
-local _Player = getrenv()._G.modules.Player
-local _Character = getrenv()._G.modules.Character
-local _Camera = getrenv()._G.modules.Camera
-
--- BAR
-local UserInputService = game:GetService("UserInputService")
-local function RUN()
-	local scriptConns = {}
-	local scriptObjects = {}
-
-	local barBackground = Drawing.new("Square")
-	barBackground.Size = Vector2.new(160, 10) -- Adjust the size of the background
-	barBackground.Color = Color3.new(0, 0, 0)
-	barBackground.Filled = true
-	barBackground.Visible = true
-	scriptObjects.background = barBackground
-
-	local barInside = Drawing.new("Square")
-	barInside.Size = Vector2.new(0, 6) -- Adjust the size of the inside bar
-	barInside.Color = Color3.fromHSV(0.5, 1, 1)
-	barInside.Filled = true
-	barInside.Visible = true
-	scriptObjects.inside = barInside
-
-	local runService = game:GetService("RunService")
-	local guiService = game:GetService("GuiService")
-
-	local timeCounter = 0
-
-	scriptConns.Update = runService.Heartbeat:Connect(function(deltaTime)
-		timeCounter = timeCounter + deltaTime * 2
-
-		local barWidth = barBackground.Size.X
-
-		local screenCenter = guiService:GetScreenResolution() / 2
-		local barCenter = screenCenter + Vector2.new(-barWidth / 2, 80)
-
-		barBackground.Position = barCenter
-
-		if timeCounter >= 0.98 then
-			game:GetService("Workspace").Ignore.LocalCharacter.Middle.Anchored = false
-			if game.Workspace:FindFirstChild("Airwalk") then
-				game.Workspace:FindFirstChild("Airwalk"):Destroy()
-			end
-			barBackground:Remove()
-			barInside:Remove()
-			scriptConns.Update:Disconnect()
-			return
-		end
-
-		local insideWidth = timeCounter * barWidth
-		barInside.Position = barCenter - Vector2.new(insideWidth / 2, 0) + Vector2.new(barWidth / 2, 2)
-		barInside.Size = Vector2.new(insideWidth, 6) -- Adjust the size of the inside bar
-		barInside.Color = Color3.fromHSV(0.25 - (timeCounter / 4), 1, 1)
-	end)
-end
-
---Tables
-local Functions = {}
-local Esp = {
-	Settings = {
-		Boxes = false,
-		BoxesOutline = true,
-		BoxesColor = Color3.fromRGB(255, 255, 255),
-		BoxesOutlineColor = Color3.fromRGB(0, 0, 0),
-		Sleeping = false,
-		SleepingColor = Color3.fromRGB(255, 255, 255),
-		Distances = false,
-		DistanceColor = Color3.fromRGB(255, 255, 255),
-		Armour = false,
-		ArmourColor = Color3.fromRGB(255, 255, 255),
-		Tool = false,
-		ToolColor = Color3.fromRGB(255, 255, 255),
-		Tracer = false,
-		TracerColor = Color3.fromRGB(255, 255, 255),
-		TracerThickness = 1,
-		TracerTransparrency = 1,
-		TracerFrom = "Bottom",
-		ViewAngle = false,
-		ViewAngleColor = Color3.fromRGB(255, 255, 255),
-		ViewAngleThickness = 1,
-		ViewAngleTransparrency = 1,
-		OreDistances = false,
-		OreDistanceColor = Color3.fromRGB(255, 255, 255),
-		OreNames = false,
-		OreNamesColor = Color3.fromRGB(255, 255, 255),
-		OresRenderDistance = 1500,
-		TextFont = 2,
-		TextOutline = true,
-		TextSize = 15,
-		RenderDistance = 1500,
-		TeamCheck = false,
-		TargetSleepers = false,
-		MinTextSize = 8,
-	},
-	Drawings = {},
-	Connections = {},
-	Players = {},
-	Ores = {},
-	StorageThings = {},
-}
-local Fonts = { ["UI"] = 0, ["System"] = 1, ["Plex"] = 2, ["Monospace"] = 3 }
-local Fov = {
-	Settings = {
-		FovEnabled = false,
-		FovColor = Color3.fromRGB(255, 255, 255),
-		FovSize = 90,
-		FovFilled = false,
-		FovTransparency = 1,
-		OutlineFovColor = Color3.fromRGB(0, 0, 0),
-		Dynamic = true,
-		RealFovSize = 90,
-		FovPosition = "Mouse",
-		Snapline = false,
-		SnaplineColor = Color3.fromRGB(255, 255, 255),
-	},
-}
-local Combat =
-	{ Settings = {
-		SilentEnabled = false,
-		SilentHitChance = 100,
-		SilentAimPart = "Head",
-		TeamCheck = true,
-		SleeperCheck = true,
-	} }
-local Spinbot = { Settings = {
-	Enabled = false,
-	Speed = 23,
-	Mode = "Random",
-	ForceCrouch = false,
-} }
-local Misc = { Settings = {
-	SpeedHackEnabled = false,
-	SpeedHackSpeed = 30,
-	LeavesTrans = 0.4,
-} }
-
-local cache, OreCache = {}, {}
-local AllowedOres, AllowedItems =
-	{ "StoneOre", "NitrateOre", "IronOre" },
-	{ "PartsBox", "MilitaryCrate", "SnallBox", "SnallBox", "Backpack", "VendingMachine" }
-local SkyBoxes = {
-	["Standard"] = {
-		["SkyboxBk"] = Sky.SkyboxBk,
-		["SkyboxDn"] = Sky.SkyboxDn,
-		["SkyboxFt"] = Sky.SkyboxFt,
-		["SkyboxLf"] = Sky.SkyboxLf,
-		["SkyboxRt"] = Sky.SkyboxRt,
-		["SkyboxUp"] = Sky.SkyboxUp,
-	},
-	["Among Us"] = {
-		["SkyboxBk"] = "rbxassetid://5752463190",
-		["SkyboxDn"] = "rbxassetid://5752463190",
-		["SkyboxFt"] = "rbxassetid://5752463190",
-		["SkyboxLf"] = "rbxassetid://5752463190",
-		["SkyboxRt"] = "rbxassetid://5752463190",
-		["SkyboxUp"] = "rbxassetid://5752463190",
-	},
-	["Spongebob"] = {
-		["SkyboxBk"] = "rbxassetid://277099484",
-		["SkyboxDn"] = "rbxassetid://277099500",
-		["SkyboxFt"] = "rbxassetid://277099554",
-		["SkyboxLf"] = "rbxassetid://277099531",
-		["SkyboxRt"] = "rbxassetid://277099589",
-		["SkyboxUp"] = "rbxassetid://277101591",
-	},
-	["Deep Space"] = {
-		["SkyboxBk"] = "rbxassetid://159248188",
-		["SkyboxDn"] = "rbxassetid://159248183",
-		["SkyboxFt"] = "rbxassetid://159248187",
-		["SkyboxLf"] = "rbxassetid://159248173",
-		["SkyboxRt"] = "rbxassetid://159248192",
-		["SkyboxUp"] = "rbxassetid://159248176",
-	},
-	["Winter"] = {
-		["SkyboxBk"] = "rbxassetid://510645155",
-		["SkyboxDn"] = "rbxassetid://510645130",
-		["SkyboxFt"] = "rbxassetid://510645179",
-		["SkyboxLf"] = "rbxassetid://510645117",
-		["SkyboxRt"] = "rbxassetid://510645146",
-		["SkyboxUp"] = "rbxassetid://510645195",
-	},
-	["Clouded Sky"] = {
-		["SkyboxBk"] = "rbxassetid://252760981",
-		["SkyboxDn"] = "rbxassetid://252763035",
-		["SkyboxFt"] = "rbxassetid://252761439",
-		["SkyboxLf"] = "rbxassetid://252760980",
-		["SkyboxRt"] = "rbxassetid://252760986",
-		["SkyboxUp"] = "rbxassetid://252762652",
-	},
-	--["test"] = {"SkyboxBk"="rbxassetid://","SkyboxDn"="rbxassetid://","SkyboxFt"="rbxassetid://","SkyboxLf"="rbxassetid://","SkyboxRt"="rbxassetid://","SkyboxUp"="rbxassetid://"},
-}
-
-LPH_JIT_MAX(function()
-	function Functions:GetClosest()
-		local closest, PlayerDistance, playerTable = nil, Esp.Settings.RenderDistance, nil
-		for i, v in pairs(getupvalues(getrenv()._G.modules.Player.GetPlayerModel)[1]) do
-			if v.model:FindFirstChild("HumanoidRootPart") then
-				local Mouse = game.Players.LocalPlayer:GetMouse()
-				local pos, OnScreen = Camera.WorldToViewportPoint(Camera, v.model:GetPivot().Position)
-				local MouseMagnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
-				local PlayerDistance = (CharcaterMiddle:GetPivot().Position - v.model:GetPivot().Position).Magnitude
-				if
-					MouseMagnitude < Fov.Settings.RealFovSize
-					and PlayerDistance <= Esp.Settings.RenderDistance
-					and OnScreen == true
-				then
-					closest = v.model
-					PlayerDistance = PlayerDistance
-					playerTable = v
-				end
-			end
-		end
-		return closest, playerTable
-	end
-end)()
-
-function Functions:GetProjectileInfo()
-	if getrenv()._G.modules.FPS.GetEquippedItem() == nil then
-		return 0, 0
-	end
-	local mod = require(game:GetService("ReplicatedStorage").ItemConfigs[getrenv()._G.modules.FPS.GetEquippedItem().id])
-	for i, v in pairs(mod) do
-		if i == "ProjectileSpeed" or i == "ProjectileDrop" then
-			return mod.ProjectileSpeed, mod.ProjectileDrop
-		end
-	end
-	return 0, 0
-end
-
-LPH_NO_VIRTUALIZE(function()
-	function Functions:Predict()
-		local Prediction = Vector3.new(0, 0, 0)
-		local Drop = Vector3.new(0, 0, 0)
-		if Functions:GetClosest() ~= nil then
-			local ps, pd = Functions:GetProjectileInfo()
-			local Player, PlayerTable = Functions:GetClosest()
-			local Velocity = PlayerTable.velocityVector
-			local Distance = (CharcaterMiddle.Position - Player[Combat.Settings.SilentAimPart].Position).Magnitude
-			if ps == 0 then
-				ps = 500
-			end
-			if pd == 0 then
-				pd = 1
-			end
-			local TimeOfFlight = Distance / ps
-			newps = ps - 13 * ps ^ 2 * TimeOfFlight ^ 2
-			TimeOfFlight = TimeOfFlight + (Distance / newps)
-			if Velocity and TimeOfFlight then
-				Drop = Vector3.new(0, TimeOfFlight, 0)
-				Prediction = (Velocity * (TimeOfFlight * 10)) * 0.5
-				Prediction = Prediction + Drop
-			end
-		end
-		return Prediction, Drop
-	end
-end)()
-
-function Functions:Draw(Type, Propities)
-	if not Type and not Propities then
-		return
-	end
-	local drawing = Drawing.new(Type)
-	for i, v in pairs(Propities) do
-		drawing[i] = v
-	end
-	table.insert(Esp.Drawings, drawing)
-	return drawing
-end
-function Functions:GetToolNames()
-	tbl = {}
-	for i, v in pairs(game:GetService("ReplicatedStorage").HandModels:GetChildren()) do
-		if not table.find(tbl, v.Name) then
-			table.insert(tbl, v.Name)
-		end
-	end
-	return tbl
-end
-function Esp:CheckTools(PlayerTable)
-	if not PlayerTable then
-		return
-	end
-	if PlayerTable.equippedItem and table.find(Functions:GetToolNames(), PlayerTable["equippedItem"].id) then
-		return tostring(PlayerTable["equippedItem"].id)
-	elseif
-		PlayerTable.handModel
-		and PlayerTable.handModel.Name
-		and string.find(PlayerTable.handModel.Name, "Hammer")
-	then
-		return PlayerTable["handModel"].Name
-	else
-		return "Empty"
-	end
-end
-function Esp:CreateEsp(PlayerTable)
-	if not PlayerTable then
-		return
-	end
-	local drawings = {}
-	drawings.BoxOutline = Functions:Draw(
-		"Square",
-		{
-			Thickness = 2,
-			Filled = false,
-			Transparency = 1,
-			Color = Esp.Settings.BoxesOutlineColor,
-			Visible = false,
-			ZIndex = -1,
-			Visible = false,
-		}
-	)
-	drawings.Box = Functions:Draw(
-		"Square",
-		{ Thickness = 1, Filled = false, Transparency = 1, Color = Esp.Settings.BoxesColor, Visible = false, ZIndex = 2, Visible = false }
-	)
-	drawings.Sleeping = Functions:Draw(
-		"Text",
-		{
-			Text = "Nil",
-			Font = Esp.Settings.TextFont,
-			Size = Esp.Settings.TextSize,
-			Center = true,
-			Outline = Esp.Settings.TextOutline,
-			Color = Esp.Settings.SleepingColor,
-			ZIndex = 2,
-			Visible = false,
-		}
-	)
-	drawings.Armour = Functions:Draw(
-		"Text",
-		{
-			Text = "Naked",
-			Font = Esp.Settings.TextFont,
-			Size = Esp.Settings.TextSize,
-			Center = false,
-			Outline = Esp.Settings.TextOutline,
-			Color = Esp.Settings.ArmourColor,
-			ZIndex = 2,
-			Visible = false,
-		}
-	)
-	drawings.Tool = Functions:Draw(
-		"Text",
-		{
-			Text = "Nothing",
-			Font = Esp.Settings.TextFont,
-			Size = Esp.Settings.TextSize,
-			Center = false,
-			Outline = Esp.Settings.TextOutline,
-			Color = Esp.Settings.ToolColor,
-			ZIndex = 2,
-			Visible = false,
-		}
-	)
-	drawings.ViewAngle = Functions:Draw(
-		"Line",
-		{
-			Thickness = Esp.Settings.ViewAngleThickness,
-			Transparency = Esp.Settings.ViewAngleTransparrency,
-			Color = Esp.Settings.ViewAngleColor,
-			ZIndex = 2,
-			Visible = false,
-		}
-	)
-	drawings.Tracer = Functions:Draw(
-		"Line",
-		{ Thickness = Esp.Settings.TracerThickness, Transparency = 1, Color = Esp.Settings.TracerColor, ZIndex = 2, Visible = false }
-	)
-	drawings.PlayerTable = PlayerTable
-	Esp.Players[PlayerTable.model] = drawings
-end
-function Esp:RemoveEsp(PlayerTable)
-	if not PlayerTable and PlayerTable.model ~= nil then
-		return
-	end
-	esp = Esp.Players[PlayerTable.model]
-	if not esp then
-		return
-	end
-	for i, v in pairs(esp) do
-		if not type(v) == "table" then
-			v:Remove()
-		end
-	end
-	Esp.Players[PlayerTable.model] = nil
-end
-
-function Esp:UpdateEsp()
-	for i, v in pairs(Esp.Players) do
-		local Character = i
-		local Position, OnScreen = Camera:WorldToViewportPoint(Character:GetPivot().Position)
-		local scale = 1 / (Position.Z * math.tan(math.rad(Camera.FieldOfView * 0.5)) * 2) * 100
-		local w, h = math.floor(40 * scale), math.floor(55 * scale)
-		local x, y = math.floor(Position.X), math.floor(Position.Y)
-		local Distance = (CharcaterMiddle:GetPivot().Position - Character:GetPivot().Position).Magnitude
-		local BoxPosX, BoxPosY = math.floor(x - w * 0.5), math.floor(y - h * 0.5)
-		local offsetCFrame = CFrame.new(0, 0, -4)
-		if Character and Character:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("Head") then
-			local TeamTag = Character.Head.Teamtag.Enabled
-			if OnScreen == true and Esp.Settings.Boxes == true and Distance <= Esp.Settings.RenderDistance then
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.BoxOutline.Visible = Esp.Settings.BoxesOutline
-					v.Box.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.BoxOutline.Visible = false
-					v.Box.Visible = false
-				else
-					v.BoxOutline.Visible = Esp.Settings.BoxesOutline
-					v.Box.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.BoxOutline.Visible = false
-					v.Box.Visible = false
-				end
-				v.BoxOutline.Position = Vector2.new(BoxPosX, BoxPosY)
-				v.BoxOutline.Size = Vector2.new(w, h)
-				v.Box.Position = Vector2.new(BoxPosX, BoxPosY)
-				v.Box.Size = Vector2.new(w, h)
-				v.Box.Color = Esp.Settings.BoxesColor
-				v.BoxOutline.Color = Esp.Settings.BoxesOutlineColor
-			else
-				v.BoxOutline.Visible = false
-				v.Box.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.Sleeping == true and Distance <= Esp.Settings.RenderDistance then
-				if v.PlayerTable.sleeping == true then
-					v.Sleeping.Text = "Sleeping"
-				else
-					v.Sleeping.Text = "Awake"
-				end
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.Sleeping.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.Sleeping.Visible = false
-				else
-					v.Sleeping.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.Sleeping.Visible = false
-				end
-				v.Sleeping.Outline = Esp.Settings.TextOutline
-				v.Sleeping.Color = Esp.Settings.SleepingColor
-				v.Sleeping.Size = math.max(
-					math.min(math.abs(Esp.Settings.TextSize * scale), Esp.Settings.TextSize),
-					Esp.Settings.MinTextSize
-				)
-				v.Sleeping.Color = Esp.Settings.SleepingColor
-				v.Sleeping.Font = Esp.Settings.TextFont
-				v.Sleeping.Position = Vector2.new(x, math.floor(y - h * 0.5 - v.Sleeping.TextBounds.Y))
-			else
-				v.Sleeping.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.Distances == true and Distance <= Esp.Settings.RenderDistance then
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.Sleeping.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.Sleeping.Visible = false
-				else
-					v.Sleeping.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.Sleeping.Visible = false
-				end
-
-				if Esp.Settings.Sleeping == false then
-					v.Sleeping.Text = math.floor(Distance) .. "s"
-				else
-					v.Sleeping.Text = v.Sleeping.Text .. " | " .. math.floor(Distance) .. "s"
-				end
-				v.Sleeping.Outline = Esp.Settings.TextOutline
-				v.Sleeping.Color = Esp.Settings.SleepingColor
-				v.Sleeping.Size = math.max(
-					math.min(math.abs(Esp.Settings.TextSize * scale), Esp.Settings.TextSize),
-					Esp.Settings.MinTextSize
-				)
-				v.Sleeping.Color = Esp.Settings.SleepingColor
-				v.Sleeping.Font = Esp.Settings.TextFont
-				v.Sleeping.Position = Vector2.new(x, math.floor(y - h * 0.5 - v.Sleeping.TextBounds.Y))
-			else
-				v.Sleeping.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.Tool == true and Distance <= Esp.Settings.RenderDistance then
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.Tool.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.Tool.Visible = false
-				else
-					v.Tool.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.Tool.Visible = false
-				end
-				v.Tool.Position = Vector2.new(
-					math.floor((BoxPosX + w) + v.Tool.TextBounds.X / 10),
-					BoxPosY + v.Tool.TextBounds.Y * 1.55 * 0.5 - ((v.Tool.TextBounds.Y * 2) * 0.5) + v.Tool.TextBounds.Y
-				)
-				v.Tool.Text = Esp:CheckTools(v.PlayerTable)
-				v.Tool.Outline = Esp.Settings.TextOutline
-				v.Tool.Size = math.max(
-					math.min(math.abs(Esp.Settings.TextSize * scale), Esp.Settings.TextSize),
-					Esp.Settings.MinTextSize
-				)
-				v.Tool.Color = Esp.Settings.ToolColor
-				v.Tool.Font = Esp.Settings.TextFont
-			else
-				v.Tool.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.Armour == true and Distance <= Esp.Settings.RenderDistance then
-				if Character.Armor:FindFirstChildOfClass("Folder") then
-					v.Armour.Text = "Armoured"
-				else
-					v.Armour.Text = "Naked"
-				end
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.Armour.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.Armour.Visible = false
-				else
-					v.Armour.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.Armour.Visible = false
-				end
-				v.Armour.Outline = Esp.Settings.TextOutline
-				v.Armour.Size = math.max(
-					math.min(math.abs(Esp.Settings.TextSize * scale), Esp.Settings.TextSize),
-					Esp.Settings.MinTextSize
-				)
-				v.Armour.Position = Vector2.new(
-					math.floor((BoxPosX + w) + v.Armour.TextBounds.X / 10),
-					BoxPosY + v.Armour.TextBounds.Y * 1.55 * 0.5 - ((v.Armour.TextBounds.Y * 2) * 0.5)
-				)
-				v.Armour.Color = Esp.Settings.ArmourColor
-				v.Armour.Font = Esp.Settings.TextFont
-			else
-				v.Armour.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.Tracer == true and Distance <= Esp.Settings.RenderDistance then
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.Tracer.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.Tracer.Visible = false
-				else
-					v.Tracer.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.Tracer.Visible = false
-				end
-				v.Tracer.Color = Esp.Settings.TracerColor
-				v.Tracer.Thickness = Esp.Settings.TracerThickness
-				v.Transparency = Esp.Settings.TracerTransparrency
-				if Esp.Settings.TracerFrom == "Bottom" then
-					v.Tracer.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
-					v.Tracer.To = Vector2.new(x, y + h * 0.5)
-				elseif Esp.Settings.TracerFrom == "Middle" then
-					v.Tracer.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-					v.Tracer.To = Vector2.new(x, y)
-				else
-					v.Tracer.From =
-						Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / Camera.ViewportSize.Y)
-					if Esp.Settings.Sleeping == true then
-						v.Tracer.To = Vector2.new(x, (y - h) - v.Sleeping.TextBounds.Y * 0.5)
-					else
-						v.Tracer.To = Vector2.new(x, y - h * 0.5)
+		print("Check 0");
+		Library = (loadstring(game:HttpGet("https://protogen.gay/crumblecrack/uilib")))();
+		ThemeManager = (loadstring(game:HttpGet("https://protogen.gay/crumblecrack/uitheme")))();
+		SaveManager = (loadstring(game:HttpGet("https://protogen.gay/crumblecrack/uisave")))();
+		esp = (loadstring(game:HttpGet("https://protogen.gay/crumblecrack/esplib")))();
+		print("Check 1");
+		local v0 = game.workspace;
+		local v1 = v0.CurrentCamera;
+		local v2 = game.Players;
+		local v3 = v2.LocalPlayer;
+		local v4 = v3.Character;
+		local v5 = v1.WorldToScreenPoint;
+		local v6 = {};
+		local v7 = workspace.CurrentCamera.ViewportSize / 2;
+		local v8 = v3:GetMouse();
+		local v9 = 0;
+		local v10 = {Neverlose="rbxassetid://8726881116",Gamesense="rbxassetid://4817809188",Rust="rbxassetid://1255040462",["Among Us"]="rbxassetid://5700183626",["CS:GO"]="rbxassetid://6937353691",["Call of Duty"]="rbxassetid://5952120301",Click="rbxassetid://8053704437",Steve="rbxassetid://4965083997"};
+		FPS = 0;
+		SilentTarget = false;
+		HeadSound = Instance.new("Sound");
+		HeadSound.Volume = 10;
+		HeadSound.Parent = game.ReplicatedStorage;
+		BodySound = Instance.new("Sound");
+		BodySound.Volume = 10;
+		BodySound.Parent = game.ReplicatedStorage;
+		local v16 = Drawing.new("Circle");
+		v16.Position = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v16.Radius = 0;
+		v16.Filled = false;
+		v16.Color = Color3.fromRGB(255, 255, 255);
+		v16.Visible = false;
+		v16.Transparency = 0;
+		v16.NumSides = 0;
+		v16.Thickness = 0;
+		local v25 = Drawing.new("Circle");
+		v25.Position = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v25.Radius = 0;
+		v25.Filled = false;
+		v25.Color = Color3.fromRGB(255, 255, 255);
+		v25.Visible = false;
+		v25.Transparency = 0;
+		v25.NumSides = 0;
+		v25.Thickness = 0;
+		local v34 = Drawing.new("Circle");
+		v34.Position = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v34.Radius = 10;
+		v34.Filled = false;
+		v34.Color = Color3.fromRGB(255, 255, 255);
+		v34.Visible = true;
+		v34.Transparency = 0;
+		v34.NumSides = 0;
+		v34.Thickness = 0;
+		local v43 = Drawing.new("Line");
+		v43.Visible = true;
+		v43.Thickness = 1;
+		v43.Transparency = 1;
+		v43.From = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+		v43.To = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+		v43.Color = Color3.fromRGB(255, 255, 255);
+		local v50 = Drawing.new("Line");
+		v50.Visible = true;
+		v50.Thickness = 1;
+		v50.Transparency = 1;
+		v50.From = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+		v50.To = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+		v50.Color = Color3.fromRGB(255, 255, 255);
+		local v57 = Drawing.new("Line");
+		v57.Visible = false;
+		v57.Thickness = 1;
+		v57.Transparency = 1;
+		v57.From = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v57.To = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v57.Color = Color3.fromRGB(255, 255, 255);
+		local v64 = Drawing.new("Line");
+		v64.Visible = false;
+		v64.Thickness = 1;
+		v64.Transparency = 1;
+		v64.From = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v64.To = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+		v64.Color = Color3.fromRGB(255, 255, 255);
+		print("Check 2");
+		function GetTargetS()
+			local v115;
+			local v116;
+			if v337 and type(v337) == "userdata" then
+                for v337, v338 in pairs(v337:GetChildren()) do
+                    if (v338 ~= game.Players.LocalPlayer) then
+                        if (v338 == v3) then
+                            continue;
+                        end
+                    end
+					local v524 = v338.Character;
+					if not v524 then
+						continue;
 					end
-				end
-			else
-				v.Tracer.Visible = false
-			end
-			if OnScreen == true and Esp.Settings.ViewAngle == true and Distance <= Esp.Settings.RenderDistance then
-				if Esp.Settings.TeamCheck == true and TeamTag == false then
-					v.ViewAngle.Visible = true
-				elseif Esp.Settings.TeamCheck == true and TeamTag == true then
-					v.ViewAngle.Visible = false
-				else
-					v.ViewAngle.Visible = true
-				end
-				if Esp.Settings.TargetSleepers == true and v.PlayerTable.sleeping == true then
-					v.ViewAngle.Visible = false
-				end
-				v.ViewAngle.Color = Esp.Settings.ViewAngleColor
-				v.ViewAngle.Thickness = Esp.Settings.ViewAngleThickness
-				v.Transparency = Esp.Settings.ViewAngleTransparrency
-				local headpos = Camera:WorldToViewportPoint(Character.Head.Position)
-				local offsetCFrame = CFrame.new(0, 0, -4)
-				v.ViewAngle.From = Vector2.new(headpos.X, headpos.Y)
-				local value = math.clamp(1 / Distance * 100, 0.1, 1)
-				local dir = Character.Head.CFrame:ToWorldSpace(offsetCFrame)
-				offsetCFrame = offsetCFrame * CFrame.new(0, 0, 0.4)
-				local dirpos = Camera:WorldToViewportPoint(Vector3.new(dir.X, dir.Y, dir.Z))
-				if OnScreen == true then
-					v.ViewAngle.To = Vector2.new(dirpos.X, dirpos.Y)
-					offsetCFrame = CFrame.new(0, 0, -4)
-				end
-			else
-				v.ViewAngle.Visible = false
-			end
-		else
-			v.Box.Visible = false
-			v.BoxOutline.Visible = false
-			v.Tool.Visible = false
-			v.Armour.Visible = false
-			v.Sleeping.Visible = false
-			v.ViewAngle.Visible = false
-			v.Tracer.Visible = false
-		end
-	end
-end
-
---Drawings
-local FovCircle = Functions:Draw(
-	"Circle",
-	{
-		Filled = Fov.Settings.FovFilled,
-		Color = Fov.Settings.FovColor,
-		Radius = Fov.Settings.FovSize,
-		NumSides = 90,
-		Thickness = 1,
-		Transparency = Fov.Settings.FovTransparency,
-		ZIndex = 2,
-		Visible = false,
-	}
-)
-local FovSnapline = Functions:Draw("Line", { Transparency = 1, Thickness = 1, Visible = false })
-
---Connections
-local PlayerUpdater = game:GetService("RunService").RenderStepped
-local PlayerConnection = PlayerUpdater:Connect(function()
-	Esp:UpdateEsp()
-end)
-
---Init Functions
-
-for i, v in pairs(getupvalues(getrenv()._G.modules.Player.GetPlayerModel)[1]) do
-	if not table.find(cache, v) then
-		table.insert(cache, v)
-		Esp:CreateEsp(v)
-	end
-end
-
-game:GetService("Workspace").ChildAdded:Connect(function(child)
-	if child:FindFirstChild("HumanoidRootPart") then
-		for i, v in pairs(getupvalues(getrenv()._G.modules.Player.GetPlayerModel)[1]) do
-			if not table.find(cache, v) then
-				Esp:CreateEsp(v)
-				table.insert(cache, v)
-			end
-		end
-	end
-end)
-
-local Library =
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/BigHacker123/Library.lua/main/Library.lua"))()
-local SaveManager = loadstring(
-	game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/SaveManager.lua")
-)()
-local ThemeManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/ThemeManager.lua"))()
-local skybox_assets =
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/BigHacker123/skybox/main/.lua", true))()
-
---// Create UI
-local Build = "Full Undetected"
-local Color = "#FF0000"
-local Ver = "2.00"
-
-if Build == "Standard" then
-	Color = "#00FF00"
-	Ver = "1.1"
-elseif Build == "Full Undetected" then
-	Color = "#FF0000"
-	Ver = "2.0"
-elseif Build == "Personal" then
-	Color = "#0000FF"
-	Ver = "1.1"
-end
-
-local Window = Library:CreateWindow({
-	Size = UDim2.fromOffset(550, 610),
-	Title = 'Astral.<font color="#d17bff">pro</font> | '
-		.. '<font color="'
-		.. Color
-		.. '">'
-		.. Build
-		.. "</font>"
-		.. "                               [v"
-		.. Ver
-		.. "]",
-	Center = true,
-	AutoShow = true,
-})
-
-local CustomTopText = Drawing.new("Text")
-CustomTopText.Text = "Astral [Legit Public] - discord.gg/astralttm"
-CustomTopText.Visible = true
-CustomTopText.Transparency = 1
-CustomTopText.Size = 15
-CustomTopText.Outline = true
-CustomTopText.Center = true
-CustomTopText.Font = 3
-CustomTopText.Color = Color3.fromRGB(255, 255, 255)
-CustomTopText.Position = Vector2.new(Camera.ViewportSize.X / 2, 0)
-
-Library:SetWatermark("Astral TS")
-
-local Tabs = {
-	Combat = Window:AddTab("Combat"),
-	Visual = Window:AddTab("Visual"),
-	Misc = Window:AddTab("Miscellaneous"),
-	["UISettings"] = Window:AddTab("UI Settings"),
-}
-
-local HBExpanderTabbox = Tabs.Combat:AddLeftTabbox()
-local HBExpanderTab = HBExpanderTabbox:AddTab("Force Hitbox Expansion")
-local GunModsTabbox = Tabs.Combat:AddRightTabbox()
-local GunModsTab = GunModsTabbox:AddTab("Modifications")
-local RiskyTabbox = Tabs.Combat:AddRightTabbox()
-local RiskyTab = RiskyTabbox:AddTab("Risky")
-local CustomHitsoundsTabBox = Tabs.Misc:AddLeftTabbox("Custom Hitsounds")
-local PlayerHitsoundsTab = CustomHitsoundsTabBox:AddTab("Player Hitsounds")
-local NatureHitsoundsTab = CustomHitsoundsTabBox:AddTab("Nature Hitsounds")
-
-local sounds = {
-	["Defualt Headshot Hit"] = "rbxassetid://9119561046",
-	["Defualt Body Hit"] = "rbxassetid://9114487369",
-	["Defualt Wood Hit"] = "rbxassetid://9125573608",
-	["Defualt Rock Hit"] = "rbxassetid://9118630389",
-	Neverlose = "rbxassetid://8726881116",
-	Gamesense = "rbxassetid://4817809188",
-	One = "rbxassetid://7380502345",
-	Bell = "rbxassetid://6534947240",
-	Rust = "rbxassetid://1255040462",
-	TF2 = "rbxassetid://2868331684",
-	Slime = "rbxassetid://6916371803",
-	["Among Us"] = "rbxassetid://5700183626",
-	Minecraft = "rbxassetid://4018616850",
-	["CS:GO"] = "rbxassetid://6937353691",
-	Saber = "rbxassetid://8415678813",
-	Baimware = "rbxassetid://3124331820",
-	Osu = "rbxassetid://7149255551",
-	["TF2 Critical"] = "rbxassetid://296102734",
-	Bat = "rbxassetid://3333907347",
-	["Call of Duty"] = "rbxassetid://5952120301",
-	Bubble = "rbxassetid://6534947588",
-	Pick = "rbxassetid://1347140027",
-	Pop = "rbxassetid://198598793",
-	Bruh = "rbxassetid://4275842574",
-	Bamboo = "rbxassetid://3769434519",
-	Crowbar = "rbxassetid://546410481",
-	Weeb = "rbxassetid://6442965016",
-	Beep = "rbxassetid://8177256015",
-	Bambi = "rbxassetid://8437203821",
-	Stone = "rbxassetid://3581383408",
-	["Old Fatality"] = "rbxassetid://6607142036",
-	Click = "rbxassetid://8053704437",
-	Ding = "rbxassetid://7149516994",
-	Snow = "rbxassetid://6455527632",
-	Laser = "rbxassetid://7837461331",
-	Mario = "rbxassetid://2815207981",
-	Steve = "rbxassetid://4965083997",
-	Snowdrake = "rbxassetid://7834724809",
-}
-
-local SoundService = game:GetService("SoundService")
-
-SoundService.PlayerHitHeadshot.Volume = 5
-SoundService.PlayerHitHeadshot.Pitch = 1
-SoundService.PlayerHitHeadshot.EqualizerSoundEffect.HighGain = -2
-
--- GAME
-PlayerHitsoundsTab:AddToggle("Enabled_Toggle1", { Text = "Enabled", Default = false })
-
-PlayerHitsoundsTab:AddDropdown(
-	"HeadshotHit",
-	{
-		Values = {
-			"Defualt Headshot Hit",
-			"Neverlose",
-			"Gamesense",
-			"One",
-			"Bell",
-			"Rust",
-			"TF2",
-			"Slime",
-			"Among Us",
-			"Minecraft",
-			"CS:GO",
-			"Saber",
-			"Baimware",
-			"Osu",
-			"TF2 Critical",
-			"Bat",
-			"Call of Duty",
-			"Bubble",
-			"Pick",
-			"Pop",
-			"Bruh",
-			"Bamboo",
-			"Crowbar",
-			"Weeb",
-			"Beep",
-			"Bambi",
-			"Stone",
-			"Old Fatality",
-			"Click",
-			"Ding",
-			"Snow",
-			"Laser",
-			"Mario",
-			"Steve",
-			"Snowdrake",
-		},
-		Default = 1,
-		Multi = false,
-		Text = "Head Hitsound:",
-	}
-)
-Options.HeadshotHit:OnChanged(function()
-	local soundId = sounds[Options.HeadshotHit.Value]
-	game:GetService("SoundService").PlayerHitHeadshot.SoundId = soundId
-end)
-
-PlayerHitsoundsTab
-	:AddSlider("Volume_Slider", { Text = "Volume", Default = 5, Min = 0, Max = 10, Rounding = 0, Compact = true })
-	:OnChanged(function(vol)
-		SoundService.PlayerHitHeadshot.Volume = vol
-	end)
-
-PlayerHitsoundsTab
-	:AddSlider("Pitch_Slider", { Text = "Pitch", Default = 1, Min = 0, Max = 2, Rounding = 1, Compact = true })
-	:OnChanged(function(pich)
-		SoundService.PlayerHitHeadshot.Pitch = pich
-	end)
---
-PlayerHitsoundsTab:AddToggle("Enabled_Toggle2", { Text = "Enabled", Default = false })
-
-PlayerHitsoundsTab:AddDropdown(
-	"Hit",
-	{
-		Values = {
-			"Defualt Body Hit",
-			"Neverlose",
-			"Gamesense",
-			"One",
-			"Bell",
-			"Rust",
-			"TF2",
-			"Slime",
-			"Among Us",
-			"Minecraft",
-			"CS:GO",
-			"Saber",
-			"Baimware",
-			"Osu",
-			"TF2 Critical",
-			"Bat",
-			"Call of Duty",
-			"Bubble",
-			"Pick",
-			"Pop",
-			"Bruh",
-			"Bamboo",
-			"Crowbar",
-			"Weeb",
-			"Beep",
-			"Bambi",
-			"Stone",
-			"Old Fatality",
-			"Click",
-			"Ding",
-			"Snow",
-			"Laser",
-			"Mario",
-			"Steve",
-			"Snowdrake",
-		},
-		Default = 1,
-		Multi = false,
-		Text = "Body Hitsound:",
-	}
-)
-Options.Hit:OnChanged(function()
-	local soundId = sounds[Options.Hit.Value]
-	game:GetService("SoundService").PlayerHit2.SoundId = soundId
-end)
-
-PlayerHitsoundsTab
-	:AddSlider("Volume_Slider", { Text = "Volume", Default = 5, Min = 0, Max = 10, Rounding = 0, Compact = true })
-	:OnChanged(function(vole)
-		SoundService.PlayerHit2.Volume = vole
-	end)
-
-PlayerHitsoundsTab
-	:AddSlider("Pitch_Slider", { Text = "Pitch", Default = 1, Min = 0, Max = 2, Rounding = 1, Compact = true })
-	:OnChanged(function(piche)
-		SoundService.PlayerHit2.Pitch = piche
-	end)
-
---* Nature Hitsounds *--
-
-NatureHitsoundsTab:AddToggle("Enabled_Toggle2", { Text = "Enabled", Default = false })
-
-NatureHitsoundsTab:AddDropdown(
-	"WoodHit",
-	{
-		Values = {
-			"Defualt Wood Hit",
-			"Neverlose",
-			"Gamesense",
-			"One",
-			"Bell",
-			"Rust",
-			"TF2",
-			"Slime",
-			"Among Us",
-			"Minecraft",
-			"CS:GO",
-			"Saber",
-			"Baimware",
-			"Osu",
-			"TF2 Critical",
-			"Bat",
-			"Call of Duty",
-			"Bubble",
-			"Pick",
-			"Pop",
-			"Bruh",
-			"Bamboo",
-			"Crowbar",
-			"Weeb",
-			"Beep",
-			"Bambi",
-			"Stone",
-			"Old Fatality",
-			"Click",
-			"Ding",
-			"Snow",
-			"Laser",
-			"Mario",
-			"Steve",
-			"Snowdrake",
-		},
-		Default = 1,
-		Multi = false,
-		Text = "Wood Hitsound:",
-	}
-)
-Options.WoodHit:OnChanged(function()
-	local soundId = sounds[Options.WoodHit.Value]
-	game:GetService("SoundService").WoodHit.SoundId = soundId
-end)
-
-NatureHitsoundsTab
-	:AddSlider("Volume_Slider", { Text = "Volume", Default = 5, Min = 0, Max = 10, Rounding = 0, Compact = true })
-	:OnChanged(function(vole)
-		SoundService.WoodHit.Volume = vole
-	end)
-
-NatureHitsoundsTab
-	:AddSlider("Pitch_Slider", { Text = "Pitch", Default = 1, Min = 0, Max = 2, Rounding = 1, Compact = true })
-	:OnChanged(function(piche)
-		SoundService.WoodHit.Pitch = piche
-	end)
---
-NatureHitsoundsTab:AddToggle("Enabled_Toggle1", { Text = "Enabled", Default = false })
-
-NatureHitsoundsTab:AddDropdown(
-	"RockHit",
-	{
-		Values = {
-			"Defualt Rock Hit",
-			"Neverlose",
-			"Gamesense",
-			"One",
-			"Bell",
-			"Rust",
-			"TF2",
-			"Slime",
-			"Among Us",
-			"Minecraft",
-			"CS:GO",
-			"Saber",
-			"Baimware",
-			"Osu",
-			"TF2 Critical",
-			"Bat",
-			"Call of Duty",
-			"Bubble",
-			"Pick",
-			"Pop",
-			"Bruh",
-			"Bamboo",
-			"Crowbar",
-			"Weeb",
-			"Beep",
-			"Bambi",
-			"Stone",
-			"Old Fatality",
-			"Click",
-			"Ding",
-			"Snow",
-			"Laser",
-			"Mario",
-			"Steve",
-			"Snowdrake",
-		},
-		Default = 1,
-		Multi = false,
-		Text = "Rock Hitsound:",
-	}
-)
-Options.RockHit:OnChanged(function()
-	local soundId = sounds[Options.RockHit.Value]
-	game:GetService("SoundService").RockHit.SoundId = soundId
-end)
-
-NatureHitsoundsTab
-	:AddSlider("Volume_Slider", { Text = "Volume", Default = 5, Min = 0, Max = 10, Rounding = 0, Compact = true })
-	:OnChanged(function(vol)
-		SoundService.RockHit.Volume = vol
-	end)
-
-NatureHitsoundsTab
-	:AddSlider("Pitch_Slider", { Text = "Pitch", Default = 1, Min = 0, Max = 2, Rounding = 1, Compact = true })
-	:OnChanged(function(pich)
-		SoundService.RockHit.Pitch = pich
-	end)
-
-LPH_JIT_MAX(function()
-	--** Hitbox Expander **--
-	local SizeX = 0
-	local SizeY = 0
-	local SizeZ = 0
-	local OriginalHeadSize = Vector3.new(1.672248125076294, 0.835624098777771, 0.835624098777771)
-	local On = false
-	local function UpdateHeadSizes(newvalue)
-		local ToggleValue = newvalue
-		for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-			if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Head") then
-				local hasFakeHead = v:FindFirstChild("FakeHead")
-
-				if ToggleValue then
-					if not hasFakeHead then
-						local FakeHead = v.Head:Clone()
-						FakeHead.Name = "FakeHead"
-						FakeHead.Parent = v
-						FakeHead.Transparency = 0
-						FakeHead.Rotation = v.Head.Rotation
+					local v525 = v524:FindFirstChild("HumanoidRootPart");
+					local v526 = v524:FindFirstChild("Humanoid");
+					if (not v525 or not v526 or (v526 and (v526.Health <= 0))) then
+						continue;
 					end
-
-					if not hasFakeHead then
-						v.Head.Size = Vector3.new(SizeX, SizeY, SizeZ)
-						v.Head.Transparency = 0.7
-						v.Head.CanCollide = false
-						v.Head.Nametag.Enabled = false
+					local v527, v528 = ScreenPos(v524.HumanoidRootPart.Position);
+					if not v528 then
+						continue;
 					end
-				else
-					if hasFakeHead then
-						v.FakeHead:Destroy()
-					end
-
-					v.Head.Size = OriginalHeadSize
-					v.Head.Nametag.Enabled = true
-					v.Head.Transparency = 0
-				end
-			end
-		end
-	end
-end)()
-
-HBExpanderTab:AddToggle("HitboxExpander", { Text = "Toggle", Default = false }):OnChanged(function(Value)
-	On = Value
-	if Value == true then
-		while Value == true do
-			for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-				if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Head") then
-					if not v:FindFirstChild("FakeHead") then
-						local FakeHead = v.Head:Clone()
-						FakeHead.Name = "FakeHead"
-						FakeHead.Parent = v
-						FakeHead.Transparency = 0
-						FakeHead.Rotation = v.Head.Rotation
-
-						v.Head.Size = Vector3.new(SizeX, SizeY * 0.7, SizeZ)
-						v.Head.Transparency = 0.7
-						v.Head.CanCollide = false
-						v.Head.Nametag.Enabled = false
+					local v529 = (Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2) - v527).Magnitude;
+					if (v529 <= (v116 or Options.FovRadius.Value or 2000)) then
+						if (Options.TargetPart.Value == "Random") then
+							local v799 = math.random(1, 2);
+							if (v799 == 1) then
+								v115 = v524.Head or false;
+							else
+								v115 = v524.HumanoidRootPart or false;
+							end
+						else
+							v115 = v524[Options.TargetPart.Value] or false;
+						end
+						v116 = v529;
 					end
 				end
 			end
-			wait(3)
-		end
-	else
-		if Value == false then
-			for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-				if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Head") then
-					if v:FindFirstChild("FakeHead") then
-						v.FakeHead:Destroy()
-						v.Head.Size = Vector3.new(1.672248125076294, 0.835624098777771, 0.835624098777771)
-						v.Head.Nametag.Enabled = true
+			if Toggles.TargetBots.Value then
+				for v530, v531 in pairs((game:GetService("Workspace")).AiZones:GetChildren()) do
+					for v643, v644 in pairs(v644:GetChildren()) do
+						if ((v644 and (v644.Name ~= "ElectricityAnomaly")) or (v644.Name ~= "PMN2")) then
+							local v755 = v644;
+							if not v755 then
+								continue;
+							end
+							local v756 = v755:FindFirstChild("HumanoidRootPart");
+							local v757 = v755:FindFirstChild("Humanoid");
+							if (not v756 or not v757 or (v757 and (v757.Health <= 0))) then
+								continue;
+							end
+							local v758, v759 = ScreenPos(v755.HumanoidRootPart.Position);
+							if not v759 then
+								continue;
+							end
+							local v760 = (Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2) - v758).Magnitude;
+							if (v760 <= (v116 or Options.FovRadius.Value or 2000)) then
+								if (Options.TargetPart.Value == "Random") then
+									local v905 = math.random(1, 2);
+									if (v905 == 1) then
+										v115 = v755.Head or false;
+									else
+										v115 = v755.HumanoidRootPart or false;
+									end
+								else
+									v115 = v755[Options.TargetPart.Value] or false;
+								end
+								v116 = v760;
+							end
+						end
 					end
 				end
 			end
+			return v115 or false;
 		end
-	end
-end)
-
-HBExpanderTab
-	:AddSlider(
-		"HBX",
-		{ Text = "X Size", Default = 1, Min = 0, Max = 4, Rounding = 2, Compact = false, Suffix = "Size" }
-	)
-	:OnChanged(function(Value)
-		SizeX = Value
-	end)
-
-HBExpanderTab
-	:AddSlider(
-		"HBY",
-		{ Text = "Y Size", Default = 1, Min = 0, Max = 6, Rounding = 2, Compact = false, Suffix = "SIze" }
-	)
-	:OnChanged(function(Value)
-		SizeY = Value
-	end)
-
-HBExpanderTab
-	:AddSlider(
-		"HBZ",
-		{ Text = "Z Size", Default = 1, Min = 0, Max = 4, Rounding = 2, Compact = false, Suffix = "Size" }
-	)
-	:OnChanged(function(Value)
-		SizeZ = Value
-	end)
-
-HBExpanderTab:AddButton("Update Hitbox Size", function()
-	Toggles.HitboxExpander:SetValue(false)
-	Toggles.HitboxExpander:SetValue(true)
-end)
-
-local Recoil = getrenv()._G.modules.Camera.Recoil
-RiskyTab:AddToggle("RecoilToggle", { Text = "No Recoil (Cant Toggle Off)", Default = false }):OnChanged(function(Value)
-	getrenv()._G.modules.Camera.Recoil = function(...)
-		local args = { ... }
-		if Value then
-			args[1].cameraY = 0
-			args[1].cameraX = 0
-			args[1].push = 0
-			args[1].cameraXShake = 0
-			args[1].rotSpeed = 0
-			args[1].lerp = 0
+		function newdrawing(v117, v118)
+			local v119 = Drawing.new(v117);
+			for v339, v340 in next, v340 or {} do
+				v119[v339] = v340;
+			end
+			return v119;
 		end
-		return Recoil(...)
-	end
-end)
-
--- BULLET TRACERS
-
-local Markeroid = {
-	HitTracer = {
-		Enabled = true,
-		Texture = "rbxassetid://7071778278",
-		Color = Color3.fromRGB(95, 0, 255),
-	},
-	HitMarker = {
-		Enabled = true,
-		Texture = "rbxassetid://316279304",
-		Color = Color3.fromRGB(95, 0, 255),
-		Size = UDim2.new(1, 50, 1, 50),
-	},
-	HitLog = {
-		Enabled = false,
-		Color = Color3.fromRGB(95, 0, 255),
-		TextSize = 19,
-		TextFond = 1,
-	},
-}
-
-GunModsTab:AddToggle("HitTracerEnabledToggle", { Text = "Hit Tracer Enabled", Default = false, Tooltip = nil })
-Toggles.HitTracerEnabledToggle:OnChanged(function(HitTracerEnabledToggleValue)
-	Markeroid.HitTracer.Enabled = HitTracerEnabledToggleValue
-end)
-GunModsTab:AddDropdown("HitTracerTextureDropDown", {
-	Values = { "Beam", "Beam 2", "DNK", "Wave" },
-	Default = 1,
-	Multi = false,
-	Text = "Texture",
-	Tooltip = nil,
-})
-Options.HitTracerTextureDropDown:OnChanged(function(HitTracerTextureDropDownValue)
-	if HitTracerTextureDropDownValue == "Beam" then
-		Markeroid.HitTracer.Texture = "rbxassetid://446111271"
-	elseif HitTracerTextureDropDownValue == "Beam 2" then
-		Markeroid.HitTracer.Texture = "rbxassetid://7216850022"
-	elseif HitTracerTextureDropDownValue == "DNK" then
-		Markeroid.HitTracer.Texture = "rbxassetid://7071778278"
-	elseif HitTracerTextureDropDownValue == "Wave" then
-		Markeroid.HitTracer.Texture = "rbxassetid://13832105797"
-	end
-end)
-GunModsTab:AddLabel("Color")
-	:AddColorPicker("TracerColorH", { Default = Color3.fromRGB(95, 0, 255), Title = "Tracer Color" })
-Options.TracerColorH:OnChanged(function(TracerColorValue)
-	Markeroid.HitTracer.Color = TracerColorValue
-end)
-
-local Xf = getrenv()._G.modules.Network
-local _f
-_f = hookfunction(
-	game.Players.LocalPlayer:FindFirstChild("RemoteEvent").FireServer,
-	LPH_NO_VIRTUALIZE(function(G, ...)
-		local w = { ... }
-		local workspace = game.Workspace
-		if w[1] == 10 and w[2] == "Hit" and w[5] then
+		function GetTargetA()
+			local v120;
+			local v121;
+			for v342, v343 in pairs(v342:GetChildren()) do
+				if (v343 ~= game.Players.LocalPlayer) then
+					if (v343 == v3) then
+						continue;
+					end
+					local v532 = v343.Character;
+					if not v532 then
+						continue;
+					end
+					local v533 = v532:FindFirstChild("HumanoidRootPart");
+					local v534 = v532:FindFirstChild("Humanoid");
+					if (not v533 or not v534 or (v534 and (v534.Health <= 0))) then
+						continue;
+					end
+					local v535, v536 = ScreenPos(v533.Position);
+					if not v536 then
+						continue;
+					end
+					local v537 = (Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2) - v535).Magnitude;
+					if (v537 <= (v121 or Options.FovRadius2.Value or 2000)) then
+						if (Options.TargetPart.Value == "Random") then
+							local v800 = math.random(1, 2);
+							if (v800 == 1) then
+								v120 = v532.Head or false;
+							else
+								v120 = v532.HumanoidRootPart or false;
+							end
+						else
+							v120 = v532[Options.TargetPart.Value] or false;
+						end
+						v121 = v537;
+					end
+				end
+			end
+			if Toggles.TargetBots.Value then
+				for v538, v539 in pairs((game:GetService("Workspace")).AiZones:GetChildren()) do
+					for v645, v646 in pairs(v646:GetChildren()) do
+						if ((v646 and (v646.Name ~= "ElectricityAnomaly")) or (v646.Name ~= "PMN2")) then
+							local v761 = v646;
+							if not v761 then
+								continue;
+							end
+							local v762 = v761:FindFirstChild("HumanoidRootPart");
+							local v763 = v761:FindFirstChild("Humanoid");
+							if (not v762 or not v763 or (v763 and (v763.Health <= 0))) then
+								continue;
+							end
+							local v764, v765 = ScreenPos(v762.Position);
+							if not v765 then
+								continue;
+							end
+							local v766 = (Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2) - v764).Magnitude;
+							if (v766 <= (v121 or Options.FovRadius2.Value or 2000)) then
+								if (Options.TargetPart.Value == "Random") then
+									local v906 = math.random(1, 2);
+									if (v906 == 1) then
+										v120 = v761.Head or false;
+									else
+										v120 = v761.HumanoidRootPart or false;
+									end
+								else
+									v120 = v761[Options.TargetPart.Value] or false;
+								end
+								v121 = v766;
+							end
+						end
+					end
+				end
+			end
+			return v120 or false;
+		end
+		function ScreenPos(v122)
+			local v123, v124 = v5(v1, v122);
+			return Vector2.new(v123.X, v123.Y), v124;
+		end
+		function PredictVelocity(v125, v126)
+			local v127 = v125.Velocity;
+			local v128 = (v1.CFrame.p - v125.CFrame.p).Magnitude;
+			local v129 = v128 / v126;
+			local v130 = v125.CFrame.p + (v127 * v129);
+			local v131 = (v130 - v125.CFrame.p).Magnitude;
+			local v132 = v126 - (0.013 * (v126 ^ 2) * (v129 ^ 2));
+			v129 += (v131 / v132)
+			return v125.CFrame.p + (v127 * v129);
+		end
+		function PredictDrop(v133, v134, v135)
+			local v136 = (v1.CFrame.p - v133.CFrame.p).Magnitude;
+			local v137 = v136 / v134;
+			local v138 = v134 - (0.013 * (v134 ^ 2) * (v137 ^ 2));
+			v137 += (v136 / v138)
+			local v139 = v135 * (v137 ^ 2);
+			if not (tostring(v139)):find("nan") then
+				return v139;
+			end
+			return 0;
+		end
+		function getbulletatribute(v140)
+			local v141 = nil;
+			local v142 = game.ReplicatedStorage.Players[game.Players.LocalPlayer.Name]:FindFirstChild("Status");
+			if v142 then
+				local v417 = v142.GameplayVariables.EquippedTool.Value;
+				if v417 then
+					local v647 = game.ReplicatedStorage.Players[game.Players.LocalPlayer.Name].Inventory:FindFirstChild(tostring(v417));
+					if v647 then
+						local v767 = (v647.Attachments:FindFirstChild("Magazine") and (v647.Attachments:FindFirstChild("Magazine")):FindFirstChildOfClass("StringValue") and (((v647.Attachments:FindFirstChild("Magazine")):FindFirstChildOfClass("StringValue")):FindFirstChild("ItemProperties")).LoadedAmmo) or v647.ItemProperties:FindFirstChild("LoadedAmmo");
+						if v767 then
+							local v881 = v767:FindFirstChild("1");
+							if v881 then
+								v141 = game.ReplicatedStorage.AmmoTypes[v881:GetAttribute("AmmoType")]:GetAttribute(v140);
+							end
+						end
+					end
+				end
+			end
+			return v141;
+		end
+		function hitmarker_update()
+			for v344 = 1, #v6, 1 do
+				v6[v344].Position = Vector2.new(v7.X, v7.Y + 150 + (v344 * 18));
+			end
+		end
+		function hitmarker(v143, v144, v145)
+			if Toggles.HitLogs.Value then
+				task.spawn(function()
+					local v540 = Drawing.new("Text");
+					local v541 = v144.Parent.Name;
+					v540.Size = 13;
+					v540.Font = 2;
+					v540.Text = "[Crumbleware] damage inflicted to " .. v541 .. " on " .. v143;
+					v540.Visible = true;
+					v540.ZIndex = 3;
+					v540.Center = true;
+					v540.Color = Color3.fromRGB(138, 43, 226);
+					v540.Outline = true;
+					table.insert(v6, v540);
+					hitmarker_update();
+					wait(v145);
+					table.remove(v6, table.find(v6, v540));
+					hitmarker_update();
+					v540:Remove();
+				end);
+			end
+		end
+		print("Check 3");
+		local v71 = Library:CreateWindow({Title="Astral.pro | You have one day!",Center=true,AutoShow=false});
+		local v72 = {Combat=v71:AddTab("Combat"),Visuals=v71:AddTab("Visuals"),Movement=v71:AddTab("Misc"),["UI Settings"]=v71:AddTab("UI Settings")};
+		local v73 = v72.Combat:AddLeftTabbox();
+		local v74 = v73:AddTab("Main");
+		local v75 = v72.Combat:AddRightTabbox();
+		local v76 = v75:AddTab("SFov");
+		local v77 = v75:AddTab("AFov");
+		v74:AddToggle("CEnabled", {Text="Enabled",Default=false,Tooltip="Enables Combat Features"});
+		v74:AddToggle("SEnabled", {Text="Silent Aim",Default=false,Tooltip="Enables Silent Aim Features"});
+		v74:AddToggle("AEnabled", {Text="Aimbot",Default=false,Tooltip="Enables Aimbot Features"});
+		v74:AddToggle("TargetBots", {Text="Target Bots",Default=false,Tooltip="Aimbot and Silent Aim Will Target Bots"});
+		v74:AddDropdown("TargetPart", {Values={"Head","HumanoidRootPart","Random"},Default=1,Multi=false,Text="Target",Tooltip="Changes the Target"});
+		v74:AddSlider("HitchanceS", {Text="Hit Chance",Default=100,Min=0,Max=100,Rounding=0,Compact=true});
+		v74:AddToggle("OldPredic", {Text="Prediction",Default=false,Tooltip="Enables Prediction"});
+		(v74:AddToggle("SnapEnabled", {Text="Silent Snaplines",Default=false,Tooltip="Enables Snaplines"})):AddColorPicker("SnaplineColor", {Default=Color3.fromRGB(255, 0, 0),Title="Snapline Color"});
+		Options.SnaplineColor:OnChanged(function()
+			v43.Color = Options.SnaplineColor.Value;
+		end);
+		(v74:AddToggle("SnapEnabled2", {Text="Aimbot Snaplines",Default=false,Tooltip="Enables Snaplines"})):AddColorPicker("SnaplineColor", {Default=Color3.fromRGB(255, 0, 0),Title="Snapline Color"});
+		Options.SnaplineColor:OnChanged(function()
+			v50.Color = Options.SnaplineColor.Value;
+		end);
+		(v76:AddToggle("FovEnabled", {Text="Silent Fov Enabled",Default=false,Tooltip="Toggles The Circle"})):AddColorPicker("FovColor", {Default=Color3.fromRGB(255, 255, 255),Title="Circle Color"});
+		Options.FovColor:OnChanged(function()
+			v16.Color = Options.FovColor.Value;
+		end);
+		Toggles.FovEnabled:OnChanged(function()
+			v16.Visible = Toggles.FovEnabled.Value;
+		end);
+		(v76:AddSlider("FovRadius", {Text="Radius",Default=80,Min=0,Max=1200,Rounding=0,Compact=true})):OnChanged(function()
+			v16.Radius = Options.FovRadius.Value;
+		end);
+		(v76:AddToggle("FovFilled", {Text="Filled",Default=false,Tooltip="Fills The Circle"})):OnChanged(function()
+			v16.Filled = Toggles.FovFilled.Value;
+		end);
+		(v76:AddSlider("FovTransparency", {Text="Transparency",Default=100,Min=0,Max=100,Rounding=2,Compact=true})):OnChanged(function()
+			v16.Transparency = Options.FovTransparency.Value / 100;
+		end);
+		(v76:AddSlider("FovSides", {Text="Sides",Default=14,Min=3,Max=64,Rounding=0,Compact=true})):OnChanged(function()
+			v16.NumSides = Options.FovSides.Value;
+		end);
+		(v76:AddSlider("FovThickness", {Text="Thickness",Default=0,Min=0,Max=10,Rounding=0,Compact=true})):OnChanged(function()
+			v16.Thickness = Options.FovThickness.Value;
+		end);
+		(v77:AddToggle("FovEnabled2", {Text="Aimbot Fov Enabled",Default=false,Tooltip="Toggles The Circle"})):AddColorPicker("FovColor2", {Default=Color3.fromRGB(255, 255, 255),Title="Circle Color"});
+		Options.FovColor2:OnChanged(function()
+			v25.Color = Options.FovColor2.Value;
+		end);
+		Toggles.FovEnabled2:OnChanged(function()
+			v25.Visible = Toggles.FovEnabled2.Value;
+		end);
+		(v77:AddSlider("FovRadius2", {Text="Radius",Default=80,Min=0,Max=1200,Rounding=0,Compact=true})):OnChanged(function()
+			v25.Radius = Options.FovRadius2.Value;
+		end);
+		(v77:AddToggle("FovFilled2", {Text="Filled",Default=false,Tooltip="Fills The Circle"})):OnChanged(function()
+			v25.Filled = Toggles.FovFilled2.Value;
+		end);
+		(v77:AddSlider("FovTransparency2", {Text="Transparency",Default=100,Min=0,Max=100,Rounding=2,Compact=true})):OnChanged(function()
+			v25.Transparency = Options.FovTransparency2.Value / 100;
+		end);
+		(v77:AddSlider("FovSides2", {Text="Sides",Default=14,Min=3,Max=64,Rounding=0,Compact=true})):OnChanged(function()
+			v25.NumSides = Options.FovSides2.Value;
+		end);
+		(v77:AddSlider("FovThickness2", {Text="Thickness",Default=0,Min=0,Max=10,Rounding=0,Compact=true})):OnChanged(function()
+			v25.Thickness = Options.FovThickness2.Value;
+		end);
+		local v78 = v72.Combat:AddRightTabbox();
+		local v79 = v78:AddTab("Gun Mods");
+		local v80 = v78:AddTab("HitSounds");
+		v79:AddToggle("GEnabled", {Text="Enabled",Default=false,Tooltip="Enables Gun Mods"});
+		v79:AddToggle("NoSpread", {Text="No Spread",Default=false,Tooltip="Enables No Spread"});
+		v79:AddToggle("nodrop", {Text="No Drop",Default=false,Tooltip="Enables No Drop"});
+		v79:AddToggle("Flash", {Text="No Muzzle Flash",Default=false,Tooltip="Disables Muzzle Flash"});
+		v79:AddToggle("NoTracer", {Text="No Tracer",Default=false,Tooltip="Disables Tracer"});
+		v79:AddToggle("Instant", {Text="Insta-Hit",Default=false,Tooltip="Disables Tracer"});
+		(v79:AddToggle("GunMods_NoRecoil", {Text="No Recoil",Default=false})):OnChanged(function()
+			local v176 = nil;
+			for v346, v347 in next, getgc(true) do
+				if ((typeof(v347) == "table") and rawget(v347, "RecoilCamera")) then
+					v176 = v347;
+					break;
+				end
+			end
+			local v177 = v176.RecoilCamera;
+			v176.RecoilCamera = function(...)
+				if (Toggles.GunMods_NoRecoil.Value and Toggles.GEnabled.Value) then
+					return 0;
+				else
+					return v177(...);
+				end
+			end;
+		end);
+		v80:AddToggle("HitSoundEnabled", {Text="Hit Sounds",Default=false,Tooltip="Enables Hit Sounds"});
+		(v80:AddDropdown("HeadEnabled", {Values={"Neverlose","Gamesense","Rust","Among Us","CS:GO","Call of Duty","Click","Steve"},Default=1,Multi=false,Text="Headshot Sound"})):OnChanged(function()
+			HeadSound.SoundId = v10[Options.HeadEnabled.Value];
+		end);
+		(v80:AddSlider("HeadVolume", {Text="Volume",Default=1,Min=0,Max=10,Rounding=2,Compact=true})):OnChanged(function()
+			HeadSound.Volume = Options.HeadVolume.Value;
+		end);
+		(v80:AddDropdown("BodyEnabled", {Values={"Neverlose","Gamesense","Rust","Among Us","CS:GO","Call of Duty","Click","Steve"},Default=1,Multi=false,Text="Bodyshot Sound"})):OnChanged(function()
+			HeadSound.SoundId = v10[Options.BodyEnabled.Value];
+		end);
+		(v80:AddSlider("BodyVolume", {Text="Volume",Default=1,Min=0,Max=10,Rounding=2,Compact=true})):OnChanged(function()
+			HeadSound.Volume = Options.BodyVolume.Value;
+		end);
+		(v80:AddToggle("DisableArmorSounds", {Text="Armor Sounds",Default=true,Tooltip="Disables Hit Sounds"})):OnChanged(function(v187)
+			if not v187 then
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Helmet.Volume = 0;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.BodyArmor.Volume = 0;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Bodyshot.Volume = 0;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Headshot.Volume = 0;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.ProjectileHits.Default.Hit.Volume = 0;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.ProjectileHits.Blood.Hit.Volume = 0;
+			else
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Helmet.Volume = 7;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.BodyArmor.Volume = 7;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Bodyshot.Volume = 7;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.HitMarkers.Headshot.Volume = 7;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.ProjectileHits.Default.Hit.Volume = 1;
+				(game:GetService("ReplicatedStorage")).SFX.Hits.ProjectileHits.Blood.Hit.Volume = 1;
+			end
+		end);
+		local v81 = v72.Visuals:AddLeftTabbox();
+		local v82 = v81:AddTab("Main Esp");
+		local v83 = v81:AddTab("Other Esp");
+		(v82:AddToggle("EEnabled", {Text="Enabled",Default=false,Tooltip="Enables ESP"})):OnChanged(function()
+			esp.enabled = Toggles.EEnabled.Value;
+		end);
+		(v82:AddToggle("NameEnabled", {Text="Names",Default=false,Tooltip="Enables Name ESP"})):OnChanged(function()
+			esp.settings.name.enabled = Toggles.NameEnabled.Value;
+		end);
+		Toggles.NameEnabled:AddColorPicker("NameColor", {Default=Color3.fromRGB(255, 255, 255),Title="Name Color"});
+		Options.NameColor:OnChanged(function()
+			esp.settings.name.color = Options.NameColor.Value;
+		end);
+		(v82:AddToggle("DistanceEnabled", {Text="Distance",Default=false,Tooltip="Enables Distance ESP"})):OnChanged(function()
+			esp.settings.distance.enabled = Toggles.DistanceEnabled.Value;
+		end);
+		Toggles.DistanceEnabled:AddColorPicker("DistanceColor", {Default=Color3.fromRGB(255, 255, 255),Title="Distance Color"});
+		Options.DistanceColor:OnChanged(function()
+			esp.settings.distance.color = Options.DistanceColor.Value;
+		end);
+		(v82:AddToggle("HealthBEnabled", {Text="HealthBar",Default=false,Tooltip="Enables HealthBar ESP"})):OnChanged(function()
+			esp.settings.healthbar.enabled = Toggles.HealthBEnabled.Value;
+		end);
+		(v82:AddToggle("HealthTEnabled", {Text="HealthText",Default=false,Tooltip="Enables HealthText ESP"})):OnChanged(function()
+			esp.settings.healthtext.enabled = Toggles.HealthTEnabled.Value;
+		end);
+		Toggles.HealthTEnabled:AddColorPicker("HealthTextColor", {Default=Color3.fromRGB(255, 255, 255),Title="Health Text Color"});
+		Options.HealthTextColor:OnChanged(function()
+			esp.settings.healthtext.color = Options.HealthTextColor.Value;
+		end);
+		(v82:AddToggle("ChamsEnabled", {Text="Chams",Default=false,Tooltip="Enables Chams ESP"})):OnChanged(function()
+			esp.settings_chams.enabled = Toggles.ChamsEnabled.Value;
+		end);
+		Toggles.ChamsEnabled:AddColorPicker("ChamsVisibleColor", {Default=Color3.fromRGB(0, 255, 0),Title="Chams Visible Color"});
+		Options.ChamsVisibleColor:OnChanged(function()
+			esp.settings_chams.visible_Color = Options.ChamsVisibleColor.Value;
+		end);
+		Toggles.ChamsEnabled:AddColorPicker("ChamsNotVisibleColor", {Default=Color3.fromRGB(255, 0, 0),Title="Chams Hidden Color"});
+		Options.ChamsNotVisibleColor:OnChanged(function()
+			esp.settings_chams.invisible_Color = Options.ChamsNotVisibleColor.Value;
+		end);
+		(v82:AddToggle("ArrowEnabled", {Text="Arrow",Default=false,Tooltip="Enables Arrow ESP"})):OnChanged(function()
+			esp.settings.arrow.enabled = Toggles.ArrowEnabled.Value;
+		end);
+		Toggles.ArrowEnabled:AddColorPicker("ArrowColor", {Default=Color3.fromRGB(255, 255, 255),Title="Arrow Color"});
+		Options.ArrowColor:OnChanged(function()
+			esp.settings.arrow.color = Options.ArrowColor.Value;
+		end);
+		(v82:AddToggle("AngleEnabled", {Text="Angle",Default=false,Tooltip="Enables Angle ESP"})):OnChanged(function()
+			esp.settings.viewangle.enabled = Toggles.AngleEnabled.Value;
+		end);
+		Toggles.AngleEnabled:AddColorPicker("AngleColor", {Default=Color3.fromRGB(255, 255, 255),Title="Angle Color"});
+		Options.AngleColor:OnChanged(function()
+			esp.settings.viewangle.color = Options.AngleColor.Value;
+		end);
+		(v82:AddToggle("TracerEnabled", {Text="Tracers",Default=false,Tooltip="Enables Tracer ESP"})):OnChanged(function()
+			esp.settings.tracer.enabled = Toggles.TracerEnabled.Value;
+		end);
+		Toggles.TracerEnabled:AddColorPicker("TracerColor", {Default=Color3.fromRGB(255, 255, 255),Title="Tracer Color"});
+		Options.TracerColor:OnChanged(function()
+			esp.settings.tracer.color = Options.TracerColor.Value;
+		end);
+		(v82:AddToggle("SkeletonEnabled", {Text="Skeleton",Default=false,Tooltip="Enables Skeleton ESP"})):OnChanged(function()
+			esp.settings.skeleton.enabled = Toggles.SkeletonEnabled.Value;
+		end);
+		Toggles.SkeletonEnabled:AddColorPicker("SkeletonColor", {Default=Color3.fromRGB(255, 255, 255),Title="Skeleton Color"});
+		Options.SkeletonColor:OnChanged(function()
+			esp.settings.skeleton.color = Options.SkeletonColor.Value;
+		end);
+		local v84 = v72.Visuals:AddRightTabbox();
+		local v85 = v84:AddTab("MainEsp Settings");
+		(v85:AddToggle("TeamCheckEnabled", {Text="Team Check",Default=false,Tooltip="Enables Team Check"})):OnChanged(function()
+			esp.teamcheck = Toggles.TeamCheckEnabled.Value;
+		end);
+		(v85:AddSlider("MaxDis", {Text="Max Distance",Default=0,Min=0,Max=5000,Rounding=0,Compact=false})):OnChanged(function()
+			esp.maxdist = Options.MaxDis.Value;
+		end);
+		(v85:AddToggle("DisplayName", {Text="Display Name",Default=false,Tooltip="Changes What Name Is Shown"})):OnChanged(function()
+			esp.settings.name.displaynames = Toggles.DisplayName.Value;
+		end);
+		(v85:AddToggle("NameOutline", {Text="Name Outline",Default=true,Tooltip="Changes If The Outline Is Visible"})):OnChanged(function()
+			esp.settings.name.outline = Toggles.DisplayName.Value;
+		end);
+		(v85:AddSlider("TextSize", {Text="Text Size",Default=13,Min=0,Max=20,Rounding=1,Compact=false})):OnChanged(function()
+			esp.fontsize = Options.TextSize.Value;
+		end);
+		(v85:AddToggle("HealthBarOutline", {Text="HealthBar Outline",Default=true,Tooltip="Changes If The Outline Is Visible"})):OnChanged(function()
+			esp.settings.healthbar.outline = Toggles.HealthBarOutline.Value;
+		end);
+		(v85:AddToggle("HealthTextOutline", {Text="HealthText Outline",Default=true,Tooltip="Changes If The Outline Is Visible"})):OnChanged(function()
+			esp.settings.healthtext.outline = Toggles.HealthTextOutline.Value;
+		end);
+		(v85:AddToggle("DistanceOutline", {Text="Distance Outline",Default=true,Tooltip="Changes If The Outline Is Visible"})):OnChanged(function()
+			esp.settings.distance.outline = Toggles.DistanceOutline.Value;
+		end);
+		(v85:AddSlider("ViewAngleSize", {Text="View Angle",Default=6,Min=0,Max=20,Rounding=0,Compact=false})):OnChanged(function()
+			esp.settings.viewangle.size = Options.ViewAngleSize.Value;
+		end);
+		(v85:AddDropdown("TracerOrigin", {Values={"Bottom","Top","Middle"},Default=3,Multi=false,Text="Tracer Origin",Tooltip="Changes the Tracer Origin"})):OnChanged(function()
+			esp.settings.tracer.origin = Options.TracerOrigin.Value;
+		end);
+		(v85:AddToggle("ArrowFilled", {Text="Arrow Filled",Default=true,Tooltip="Changes If The Arrow Is Filled"})):OnChanged(function()
+			esp.settings.arrow.filled = Toggles.ArrowFilled.Value;
+		end);
+		(v85:AddSlider("ArrowRadius", {Text="Arrow Radius",Default=100,Min=0,Max=800,Rounding=0,Compact=false})):OnChanged(function()
+			esp.settings.arrow.radius = Options.ArrowRadius.Value;
+		end);
+		(v85:AddSlider("ArrowSize", {Text="Arrow Size",Default=25,Min=0,Max=100,Rounding=1,Compact=false})):OnChanged(function()
+			esp.settings.arrow.size = Options.ArrowSize.Value;
+		end);
+		local v86 = v72.Visuals:AddLeftTabbox();
+		local v87 = v86:AddTab("Other");
+		local v88 = v86:AddTab("Other Settings");
+		v88:AddSlider("ThirdPersonDistance", {Text="ThirdPerson Distance",Default=5,Min=0,Max=10,Rounding=2,Compact=false});
+		v88:AddDropdown("ArmChamsMat", {Text="Arm Chams Material",Default="SmoothPlastic",Values={"ForceField","Neon","SmoothPlastic","Glass"}});
+		(v88:AddLabel("Arm Chams Color")):AddColorPicker("ArmChamsColor", {Default=Color3.new(1, 1, 1),Title="Arm Chams Color"});
+		v88:AddDropdown("GunChamsMat", {Text="Gun Chams Material",Default="SmoothPlastic",Values={"ForceField","Neon","SmoothPlastic","Glass"}});
+		(v88:AddLabel("Gun Chams Color")):AddColorPicker("GunChamsColor", {Default=Color3.new(1, 1, 1),Title="Gun Chams Color"});
+		v88:AddSlider("ZoomAmount", {Text="Zoom Amount",Default=5,Min=0,Max=30,Rounding=1,Compact=false});
+		v88:AddSlider("CrossHairSize", {Text="Crosshair-Size",Default=5,Min=0,Max=25,Rounding=1,Compact=false});
+		Options.CrossHairSize:OnChanged(function()
+			v57.From = Vector2.new((v1.ViewportSize.X / 2) - Options.CrossHairSize.Value, v1.ViewportSize.Y / 2);
+			v57.To = Vector2.new((v1.ViewportSize.X / 2) + Options.CrossHairSize.Value, v1.ViewportSize.Y / 2);
+			v64.From = Vector2.new(v1.ViewportSize.X / 2, (v1.ViewportSize.Y / 2) - Options.CrossHairSize.Value);
+			v64.To = Vector2.new(v1.ViewportSize.X / 2, (v1.ViewportSize.Y / 2) + Options.CrossHairSize.Value);
+		end);
+		v87:AddToggle("VisualsEnabled", {Text="Enabled",Default=false,Tooltip="Enables Visuals"});
+		v87:AddToggle("HitLogs", {Text="Hit Logs",Default=false,Tooltip="Enables Hit Logs"});
+		v87:AddToggle("Predictionvis", {Text="Prediction Visulizer",Default=false,Tooltip="Enables Visuals"});
+		v87:AddToggle("FullBrightEnabled", {Text="FullBright",Default=false});
+		(v87:AddToggle("ThirdPersonEnabled", {Text="Third Person",Default=false})):AddKeyPicker("ThirdPersonKey", {Default="P",SyncToggleState=true,Mode="Toggle",Text="Third Person",NoUI=false});
+		v87:AddToggle("ArmChamsEnabled", {Text="Arm Chams",Default=false});
+		v87:AddToggle("GunChamsEnabled", {Text="Gun Chams",Default=false});
+		(v87:AddToggle("HitMarkEnabled", {Text="Hit Markers",Default=false})):OnChanged(function()
+			HitMarker = Toggles.HitMarkEnabled.Value;
+		end);
+		Toggles.HitMarkEnabled:AddColorPicker("HitMarkerColor", {Default=Color3.fromRGB(255, 255, 255),Title="Hit Marker Color"});
+		Options.HitMarkerColor:OnChanged(function()
+			HitMarkerColor = Options.HitMarkerColor.Value;
+		end);
+		(v87:AddToggle("BulletTracerEnabled", {Text="Bullet Tracers",Default=false})):OnChanged(function()
+			HitTracerToggle = Toggles.BulletTracerEnabled.Value;
+		end);
+		Toggles.BulletTracerEnabled:AddColorPicker("HitTracerColor", {Default=Color3.fromRGB(0, 0, 255),Title="Hit Tracer Color"});
+		Options.HitTracerColor:OnChanged(function()
+			HitTracerColor = Options.HitTracerColor.Value;
+		end);
+		((v87:AddToggle("ZoomEnabled", {Text="Zoom",Default=false})):AddKeyPicker("ZoomKey", {Default="X",SyncToggleState=true,Mode="Toggle",Text="Zoom",NoUI=false})):OnChanged(function()
+			repeat
+				if not Toggles.ZoomEnabled.Value then
+					v1.FieldOfView = 90;
+				end
+			until v1.FieldOfView ~= Options.ZoomAmount.Value 
+		end);
+		(v87:AddToggle("CrosshairEnabled", {Text="Crosshair",Default=false})):OnChanged(function()
+			v64.Visible = Toggles.CrosshairEnabled.Value;
+			v57.Visible = Toggles.CrosshairEnabled.Value;
+		end);
+		Toggles.CrosshairEnabled:AddColorPicker("CrossHairColor", {Default=Color3.fromRGB(255, 255, 255),Title="CrossHair Color"});
+		Options.CrossHairColor:OnChanged(function()
+			v57.Color = Options.CrossHairColor.Value;
+			v64.Color = Options.CrossHairColor.Value;
+		end);
+		local v89 = v72.Movement:AddLeftGroupbox("Main");
+		(v89:AddToggle("speed", {Text="Speed",Default=false})):AddKeyPicker("speed_Enabled_KeyPicker", {Default="RightAlt",SyncToggleState=true,Mode="Toggle",Text="Speed",NoUI=false});
+		Options.speed_Enabled_KeyPicker:OnClick(function()
 			task.spawn(function()
-				local m = nil
-				if w[8] then
-					m = w[8]
+				SpeedToggle = Toggles.speed.Value;
+				if SpeedToggle then
+					while Toggles.speed.Value do
+						local v648 = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
+						if (v648 ~= nil) then
+							local v768 = Vector3.new();
+							local v769 = v0.CurrentCamera.CFrame.lookVector;
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.W) then
+								v768 += Vector3.new(v769.x, 0, v769.Z)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.S) then
+								v768 -= Vector3.new(v769.x, 0, v769.Z)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.D) then
+								v768 += Vector3.new(-v769.Z, 0, v769.x)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.A) then
+								v768 += Vector3.new(v769.Z, 0, -v769.x)
+							end
+							v768 = v768.Unit;
+							local v771 = Vector3.new(v768.x * v9, v648.Velocity.y, v768.Z * v9);
+							if (v768.Unit.x == v768.Unit.x) then
+								v648.Velocity = v771;
+							end
+						end
+						task.wait(0.01);
+					end
+				end
+			end);
+		end);
+		Toggles.speed:OnChanged(function()
+			task.spawn(function()
+				SpeedToggle = Toggles.speed.Value;
+				if SpeedToggle then
+					while Toggles.speed.Value do
+						repeat
+							wait();
+						until game.Players.LocalPlayer.Character 
+						local v649 = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
+						if (v649 ~= nil) then
+							local v772 = Vector3.new();
+							local v773 = v0.CurrentCamera.CFrame.lookVector;
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.W) then
+								v772 += Vector3.new(v773.x, 0, v773.Z)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.S) then
+								v772 -= Vector3.new(v773.x, 0, v773.Z)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.D) then
+								v772 += Vector3.new(-v773.Z, 0, v773.x)
+							end
+							if (game:GetService("UserInputService")):IsKeyDown(Enum.KeyCode.A) then
+								v772 += Vector3.new(v773.Z, 0, -v773.x)
+							end
+							v772 = v772.Unit;
+							local v775 = Vector3.new(v772.x * v9, v649.Velocity.y, v772.Z * v9);
+							if (v772.Unit.x == v772.Unit.x) then
+								v649.Velocity = v775;
+							end
+						end
+						task.wait(0.01);
+					end
+				end
+			end);
+		end);
+		(v89:AddToggle("bhop", {Text="Bunny Hop",Default=false})):OnChanged(function(v266)
+			task.spawn(function()
+				if v266 then
+					repeat
+						wait();
+					until v3.Character 
+					local v551 = v3.Character:FindFirstChildOfClass("Humanoid");
+					if v551 then
+						for v776, v777 in pairs({getconnections(v776.StateChanged),getconnections(v776:GetPropertyChangedSignal("WalkSpeed")),getconnections(v776:GetPropertyChangedSignal("JumpHeight"))}) do
+							for v801, v802 in pairs(v802) do
+								if Toggles.bhop.Value then
+									v802:Disable();
+								else
+									v802:Enable();
+								end
+							end
+						end
+					end
+				end
+			end);
+		end);
+		local v90 = v72.Movement:AddLeftGroupbox("Settings");
+		(v90:AddSlider("speed", {Text="Speed",Min=0,Max=30,Default=20,Rounding=0})):OnChanged(function()
+			v9 = Options.speed.Value;
+		end);
+		local v91 = v72.Movement:AddRightGroupbox("Anti-Aim");
+		v91:AddToggle("aaenabled", {Text="Enabled",Default=false});
+		v91:AddToggle("force", {Text="Force Angles",Default=false});
+		local v92 = v72.Movement:AddRightGroupbox("Anti-Aim Settings");
+		v92:AddToggle("leanaa", {Text="Lean Anti-Aim",Default=false});
+		v92:AddSlider("leandel", {Text="Lean Delay",Min=0,Max=1,Default=1,Rounding=2});
+		v92:AddDropdown("yawbase", {Values={"camera","random","spin","target"},Default="camera",Multi=false,Text="Yaw Base",Tooltip="Changes the Yaw Base"});
+		v92:AddSlider("yawoff", {Text="Yaw Offset",Min=-180,Max=180,Default=0,Rounding=0});
+		v92:AddDropdown("yawm", {Values={"none","jitter","offset jitter"},Default="none",Multi=false,Text="Yaw Modifier",Tooltip="Changes the Yaw Modifer"});
+		v92:AddSlider("modoff", {Text="Modifier Offset",Min=-180,Max=180,Default=0,Rounding=0});
+		v92:AddSlider("pitch", {Text="Pitch",Min=-2,Max=2,Default=0,Rounding=0});
+		local v93 = v72.Movement:AddRightGroupbox("Removals");
+		(v93:AddToggle("visorremover", {Text="Remove Visor",Default=false})):OnChanged(function(v268)
+			local v269 = v2.LocalPlayer.PlayerGui:FindFirstChild("MainGui");
+			if v269 then
+				local v430 = v269:FindFirstChild("MainFrame");
+				if v430 then
+					local v650 = v430:FindFirstChild("ScreenEffects");
+					Visor = v650:FindFirstChild("Visor");
+				end
+			end
+		end);
+		local v94 = {};
+		SpawnerZones = (game:GetService("Workspace")):FindFirstChild("SpawnerZones");
+		(v93:AddToggle("leafremover", {Text="Remove Leaves",Default=false})):OnChanged(function(v270)
+			if (v270 and SpawnerZones) then
+				for v552, v553 in next, (game:GetService("Workspace")).SpawnerZones.Foliage:GetDescendants() do
+					if (v553:IsA("MeshPart") and (v553.TextureID == "")) then
+						v94[v552] = {Part=v553,Old=v553.Parent};
+						v553.Parent = CoreGui;
+					end
+				end
+			else
+				pcall(function()
+					for v651, v652 in pairs(v94) do
+						v652.Part.Parent = v652.Old;
+					end
+					v94 = {};
+				end);
+			end
+		end);
+		v93:AddToggle("cloudsremover", {Text="Remove Clouds",Default=false});
+		v93:AddToggle("atmosphereremover", {Text="Remove Atmosphere",Default=false});
+		(v93:AddToggle("serverinforemove", {Text="Remove Server Info",Default=false})):OnChanged(function(v271)
+			for v350, v351 in pairs(v3.PlayerGui:GetDescendants()) do
+				if v351:IsA("TextLabel") then
+					if (v351.Text:find("| Server") or v351.Text:find(game.JobId:lower()) or v351.Text:find(v3.UserId)) then
+						serverLabel = v351;
+					end
+				end
+			end
+		end);
+		(v93:AddToggle("landmineremover", {Text="Remove PMN2",Default=false})):OnChanged(function(v272)
+			if v272 then
+				for v554, v555 in pairs((game:GetService("Workspace")).AiZones:GetDescendants()) do
+					if (v555.Name == "PMN2") then
+						v555:Destroy();
+					end
+				end
+			end
+		end);
+		local v95 = v72.Movement:AddLeftGroupbox("Chat");
+		(v95:AddToggle("chatspam", {Text="Enabled",Default=false})):OnChanged(function()
+		end);
+		v95:AddInput("message", {Default="Crumbleware V3 On Top (.gg/rryKkVtZw2)",Numeric=false,Finished=false,Text="Message",Tooltip="What Message is spammed",Placeholder="Spammed Message"});
+		v95:AddSlider("delayc", {Text="Chat Delay",Min=2,Max=10,Default=2,Rounding=1});
+		task.spawn(function()
+			while task.wait(Options.delayc.Value) do
+				if Toggles.chatspam.Value then
+					local v556 = {[1]=Options.message.Value,[2]="Global"};
+					game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(v556));
+				end
+			end
+		end);
+		local v96 = v72.Movement:AddLeftGroupbox("Other");
+		v96:AddToggle("invview", {Text="Inventory Viewer",Default=false});
+		v96:AddSlider("delayv", {Text="Inventory Viewer Update Delay",Min=0,Max=10,Default=1,Rounding=2});
+		v96:AddInput("scanfor", {Default="",Numeric=false,Finished=false,Text="Message",Tooltip="What is scanned for",Placeholder="Item Scanned For"});
+		ItemScannerText = Drawing.new("Text");
+		v96:AddSlider("itemdelay", {Text="Scan Delay",Min=0,Max=240,Default=120,Rounding=1});
+		v96:AddButton("itemscanner", function()
+			local v273 = false;
+			for v352, v353 in pairs(v352:GetDescendants()) do
+				if (tostring(v353.Name) == tostring(Options.scanfor.Value)) then
+					local v557 = nil;
+					for v655, v656 in pairs(v353:GetDescendants()) do
+						if (v656:IsA("MeshPart") or v656:IsA("Part")) then
+							v557 = v656;
+							break;
+						end
+					end
+					if (v557 ~= nil) then
+						v273 = true;
+						local v730 = v557.Position;
+						local v731 = (v730 - v3.Character.HumanoidRootPart.Position).Magnitude;
+						v731 = v731 / 3;
+						local v732, v733 = v1:WorldToViewportPoint(v730);
+						ItemScannerText.Text = tostring(Options.scanfor.Value) .. " (" .. tostring(v731) .. "m)";
+						ItemScannerText.Size = 15;
+						ItemScannerText.Outline = true;
+						ItemScannerText.Color = Color3.fromRGB(255, 255, 255);
+						ItemScannerText.Position = Vector2.new(v732.X, v732.Y);
+						ItemScannerText.Visible = true;
+						local v740 = tick();
+						while math.floor(tick() - v740) < tonumber(Options.itemdelay.Value) do
+							local v778 = v557.Position;
+							local v779 = (v778 - v3.Character.HumanoidRootPart.Position).Magnitude;
+							v779 = v779 / 3;
+							local v780, v781 = v1:WorldToViewportPoint(v778);
+							ItemScannerText.Text = tostring(Options.scanfor.Value) .. " (" .. tostring(math.floor(v779)) .. "m)";
+							ItemScannerText.Position = Vector2.new(v780.X, v780.Y);
+							ItemScannerText.Visible = v781;
+							task.wait();
+						end
+						ItemScannerText.Visible = false;
+						return;
+					end
+				end
+			end
+			if (v273 == false) then
+				for v558, v559 in next, game.ReplicatedStorage.Players:GetChildren() do
+					if (v559.Name ~= v3.Name) then
+						for v785, v786 in next, v559:GetDescendants() do
+							if v786:IsA("StringValue") then
+								if ((v786.Parent.Name == "Inventory") or (v786.Parent.Name == "Equipment")) then
+									if (tostring(v786.Name) == tostring(Options.scanfor.Value)) then
+										local v931 = v559.Name;
+										if game.Players[v931].Character:FindFirstChild("HumanoidRootPart") then
+											v273 = true;
+											local v941 = game.Players[v931].Character.HumanoidRootPart.Position;
+											local v942 = (v941 - v3.Character.HumanoidRootPart.Position).Magnitude;
+											v942 = v942 / 3;
+											local v943, v944 = v1:WorldToViewportPoint(v941);
+											ItemScannerText.Text = tostring(Options.scanfor.Value) .. " (" .. tostring(math.floor(v942)) .. "m)";
+											ItemScannerText.Size = 15;
+											ItemScannerText.Outline = true;
+											ItemScannerText.Color = Color3.fromRGB(255, 255, 255);
+											ItemScannerText.Position = Vector2.new(v943.X, v943.Y);
+											ItemScannerText.Visible = true;
+											local v951 = tick();
+											while math.floor(tick() - v951) < tonumber(Options.itemdelay.Value) do
+												local v958 = game.Players[v931].Character.HumanoidRootPart.Position;
+												local v959 = (v958 - v3.Character.HumanoidRootPart.Position).Magnitude;
+												v959 = v959 / 3;
+												local v960, v961 = v1:WorldToViewportPoint(v958);
+												ItemScannerText.Text = tostring(Options.scanfor.Value) .. " (" .. tostring(v959) .. "m)";
+												ItemScannerText.Position = Vector2.new(v960.X, v960.Y);
+												ItemScannerText.Visible = v961;
+												task.wait();
+											end
+											ItemScannerText.Visible = false;
+											return;
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end);
+		Library:SetWatermarkVisibility(true);
+		Library:SetWatermark("Astral.pro");
+		Library.KeybindFrame.Visible = true;
+		Library:OnUnload(function()
+			Library.Unloaded = true;
+		end);
+		Library:OnUnload(function()
+			Library.Unloaded = true;
+		end);
+		local v98 = v72["UI Settings"]:AddLeftGroupbox("Menu");
+		local v99 = v72["UI Settings"]:AddRightGroupbox("UI");
+		v98:AddButton("Unload", function()
+			Library:Unload();
+		end);
+		(v98:AddLabel("Menu bind")):AddKeyPicker("MenuKeybind", {Default="End",NoUI=true,Text="Menu keybind"});
+		Library.ToggleKeybind = Options.MenuKeybind;
+		ThemeManager:SetLibrary(Library);
+		SaveManager:SetLibrary(Library);
+		SaveManager:IgnoreThemeSettings();
+		SaveManager:SetIgnoreIndexes({"MenuKeybind"});
+		ThemeManager:SetFolder("CrumblewareV3.0");
+		SaveManager:SetFolder("CrumblewareV3.0/ProjectDelta");
+		SaveManager:BuildConfigSection(v72["UI Settings"]);
+		ThemeManager:ApplyToTab(v72["UI Settings"]);
+		v99:AddToggle("watermark", {Text="WaterMark",Default=true,Tooltip="Toggles the Water Mark"});
+		Toggles.watermark:OnChanged(function()
+			mark = Toggles.watermark.Value;
+			Library:SetWatermarkVisibility(mark);
+		end);
+		v99:AddToggle("Keybinds", {Text="KeyBind List",Default=false,Tooltip="Toggles the KeyBind List"});
+		Toggles.Keybinds:OnChanged(function()
+			keybind = Toggles.Keybinds.Value;
+			Library.KeybindFrame.Visible = keybind;
+		end);
+		local v102 = nil;
+		v102 = hookmetamethod(game, "__newindex", function(v279, v280, v281)
+			if ((v279 == v1) and (v280 == "CFrame")) then
+				LastCameraCFrame = v281;
+				if (Toggles.ThirdPersonEnabled.Value and Toggles.VisualsEnabled.Value) then
+					return v102(v279, v280, v281 + (v1.CFrame.LookVector * -Options.ThirdPersonDistance.Value));
+				end
+			end
+			return v102(v279, v280, v281);
+		end);
+		local v103;
+		v103 = hookmetamethod(game, "__namecall", newcclosure(function(v282, ...)
+			local v283 = getnamecallmethod();
+			local v284 = {...};
+			if (getnamecallmethod() == "GetAttribute") then
+				if ((v284[1] == "MuzzleEffect") and Toggles.Flash.Value) then
+					return false;
+				end
+				if ((v284[1] == "AccuracyDeviation") and Toggles.NoSpread.Value) then
+					return 1;
+				end
+				if ((v284[1] == "ProjectileDrop") and Toggles.nodrop.Value) then
+					return 0;
+				end
+				if ((v284[1] == "Tracer") and Toggles.NoTracer.Value) then
+					return false;
+				end
+				if ((v284[1] == "RecoilStrength") and Toggles.GunMods_NoRecoil.Value) then
+					return 0;
+				end
+				if ((v284[1] == "RecoilRecoveryTimeMod") and Toggles.GunMods_NoRecoil.Value) then
+					return 0;
+				end
+				if ((v284[1] == "MuzzleVelocity") and Toggles.Instant.Value) then
+					return 9000000000;
+				end
+			elseif ((getnamecallmethod() == "FireServer") and (v282.Name == "ProjectileInflict")) then
+				hitmarker(tostring(v284[2]), v284[2], 3);
+				FoundHit = true;
+				HitTarget = v284[2];
+				if HitTracerToggle then
+					task.spawn(function()
+						local v803 = v284[2].Position;
+						local v804, v805 = v1:WorldToViewportPoint(v803);
+						local v806 = false;
+						local v807 = Instance.new("Part");
+						v807.CanCollide = false;
+						v807.Anchored = true;
+						v807.Parent = v0;
+						local v811 = Instance.new("Attachment");
+						v811.Position = v3.Character.Head.Position;
+						v811.Parent = v807;
+						v811.Visible = false;
+						local v816 = Instance.new("Attachment");
+						v816.Position = v803;
+						v816.Parent = v807;
+						v816.Visible = false;
+						local v820 = Instance.new("Beam");
+						v820.Enabled = v805;
+						v820.Brightness = 10;
+						v820.LightInfluence = 0.75;
+						v820.LightEmission = 0.1;
+						v820.Attachment0 = v811;
+						v820.Attachment1 = v816;
+						v820.Texture = "rbxassetid://7216850022";
+						v820.TextureLength = 7;
+						v820.TextureMode = "Stretch";
+						v820.TextureSpeed = 6.21;
+						v820.Color = ColorSequence.new(HitTracerColor);
+						v820.Transparency = NumberSequence.new(0);
+						v820.Parent = v807;
+						v820.CurveSize0 = 0;
+						v820.CurveSize1 = 0;
+						v820.FaceCamera = true;
+						v820.Segments = 10;
+						v820.Width0 = 2;
+						v820.Width1 = 2;
+						v820.ZOffset = 0;
+						local v841;
+						v841 = (game:GetService("RunService")).RenderStepped:Connect(function()
+							if not v806 then
+								v820.Enabled = v805;
+							else
+								v841:Disconnect();
+							end
+						end);
+						if not v806 then
+							wait(5);
+							v806 = true;
+							v807:Destroy();
+						end
+					end);
+				end
+				if HitMarker then
+					task.spawn(function()
+						local v842 = v284[2].Position;
+						local v843, v844 = v1:WorldToViewportPoint(v842);
+						local v845 = false;
+						local v846 = Drawing.new("Line");
+						local v847 = Drawing.new("Line");
+						local v848 = Drawing.new("Line");
+						local v849 = Drawing.new("Line");
+						v846.Visible = v844;
+						v847.Visible = v844;
+						v848.Visible = v844;
+						v849.Visible = v844;
+						v846.Thickness = 2;
+						v847.Thickness = 2;
+						v848.Thickness = 2;
+						v849.Thickness = 2;
+						v846.Color = HitMarkerColor;
+						v847.Color = HitMarkerColor;
+						v848.Color = HitMarkerColor;
+						v849.Color = HitMarkerColor;
+						v846.Transparency = 1;
+						v847.Transparency = 1;
+						v848.Transparency = 1;
+						v849.Transparency = 1;
+						v846.From = Vector2.new(v843.X - 10, v843.Y - 10);
+						v846.To = Vector2.new(v843.X - 3, v843.Y - 3);
+						v847.From = Vector2.new(v843.X + 10, v843.Y - 10);
+						v847.To = Vector2.new(v843.X + 3, v843.Y - 3);
+						v848.From = Vector2.new(v843.X - 10, v843.Y + 10);
+						v848.To = Vector2.new(v843.X - 3, v843.Y + 3);
+						v849.From = Vector2.new(v843.X + 10, v843.Y + 10);
+						v849.To = Vector2.new(v843.X + 3, v843.Y + 3);
+						local v874;
+						v874 = (game:GetService("RunService")).RenderStepped:Connect(function()
+							if not v845 then
+								local v908, v909 = v1:WorldToViewportPoint(v842);
+								v846.Visible = v909;
+								v847.Visible = v909;
+								v848.Visible = v909;
+								v849.Visible = v909;
+								v846.From = Vector2.new(v908.X - 10, v908.Y - 10);
+								v846.To = Vector2.new(v908.X - 5, v908.Y - 5);
+								v847.From = Vector2.new(v908.X + 10, v908.Y - 10);
+								v847.To = Vector2.new(v908.X + 5, v908.Y - 5);
+								v848.From = Vector2.new(v908.X - 10, v908.Y + 10);
+								v848.To = Vector2.new(v908.X - 5, v908.Y + 5);
+								v849.From = Vector2.new(v908.X + 10, v908.Y + 10);
+								v849.To = Vector2.new(v908.X + 5, v908.Y + 5);
+							else
+								v874:Disconnect();
+							end
+						end);
+						wait(5);
+						while v846.Transparency > 0 do
+							v846.Transparency = v846.Transparency - 0.05;
+							v847.Transparency = v847.Transparency - 0.05;
+							v848.Transparency = v848.Transparency - 0.05;
+							v849.Transparency = v849.Transparency - 0.05;
+							wait(0.03);
+						end
+						v845 = true;
+						v846:Remove();
+						v847:Remove();
+						v848:Remove();
+						v849:Remove();
+					end);
+				end
+			end
+			return v103(v282, unpack(v284));
+		end));
+		local v104 = {FindPartOnRayWithIgnoreList={ArgCountRequired=3,Args={"Instance","Ray","table","boolean","boolean"}},FindPartOnRayWithWhitelist={ArgCountRequired=3,Args={"Instance","Ray","table","boolean"}},FindPartOnRay={ArgCountRequired=2,Args={"Instance","Ray","Instance","boolean","boolean"}},Raycast={ArgCountRequired=3,Args={"Instance","Vector3","Vector3","RaycastParams"}}};
+		local function v105(v285, v286)
+			return (v286 - v285).Unit * (game.workspace.Camera.CFrame.Position - v286).Magnitude;
+		end
+		local function v106(v287, v288)
+			local v289 = 0;
+			if (#v287 < v288.ArgCountRequired) then
+				return false;
+			end
+			for v354, v355 in next, v354 do
+				if (typeof(v355) == v288.Args[v354]) then
+					v289 = v289 + 1;
+				end
+			end
+			return v289 >= v288.ArgCountRequired;
+		end
+		local v107;
+		v107 = hookmetamethod(game, "__namecall", newcclosure(function(...)
+			local v290 = getnamecallmethod();
+			local v291 = {...};
+			local v292 = v291[1];
+			if (Toggles.SEnabled.Value and Toggles.CEnabled.Value and SilentTarget and (v292 == workspace) and not checkcaller() and (v290 == "Raycast")) then
+				if v106(v291, v104.Raycast) then
+					local v658 = v291[2];
+					local v659 = SilentTarget;
+					if v659 then
+						v291[3] = v105(v658, Vector3.new(v659.X, v659.Y, v659.Z));
+						return v107(unpack(v291));
+					end
+				end
+			elseif (Toggles.aaenabled.Value and (v292.Name == "UpdateTilt") and not checkcaller() and (v290 == "FireServer")) then
+				v291[1] = Options.pitch.Value;
+				return v107(v292, unpack(v291));
+			end
+			return v107(...);
+		end));
+		game.UserInputService.InputBegan:Connect(function(v293)
+			if (v293.UserInputType == Enum.UserInputType.MouseButton2) then
+				Holding = true;
+			end
+		end);
+		game.UserInputService.InputEnded:Connect(function(v294)
+			if (v294.UserInputType == Enum.UserInputType.MouseButton2) then
+				Holding = false;
+			end
+		end);
+		function Draw(v295, v296)
+            v295 = Drawing.new(v295)
+            for v356, v357 in pairs(v296) do
+                v295[v356] = v357
+            end
+            return v295
+        end        
+		local v108 = {Size=Vector2.new(170, 14),Main=Draw("Square", {Thickness=0,Size=Vector2.new(300, 14),Filled=true,Color=Color3.fromRGB(20, 20, 20),Outline=true,OutlineColor=Color3.fromRGB(50, 50, 50),Position=Vector2.new(0, game.workspace.CurrentCamera.ViewportSize.Y / 6),Transparency=0}),Top=Draw("Square", {Thickness=0,Size=Vector2.new(300, 3),Filled=true,Color=Color3.fromRGB(209, 123, 255),Outline=true,OutlineColor=Color3.fromRGB(50, 50, 50),Position=Vector2.new(0, (game.workspace.CurrentCamera.ViewportSize.Y / 6) - 2.5),Transparency=0}),Texts={}};
+		v108.Clear = function(v297)
+			for v359, v360 in pairs(v108.Texts) do
+				v360:Remove();
+				v108.Texts[v359] = nil;
+				v108.Main.Size = v108.Size;
+				v108.Main.Transparency = 0;
+				v108.Top.Transparency = 0;
+			end
+		end;
+		v108.AddText = function(v298, v299, v300, v301)
+			local v302 = v108.Main;
+			local v303 = v108.Top;
+			local v304 = Draw("Text", {Text=v299,Color=Color3.new(1, 1, 1),Transparency=1,Size=13,Font=2,Outline=true,Visible=true});
+			table.insert(v108.Texts, v304);
+			local v305 = #v108.Texts;
+			v302.Size = Vector2.new(v108.Size.X, 14 * v305);
+			v303.Size = Vector2.new(v108.Size.X, 3);
+			v304.Position = v302.Position + Vector2.new(5, (v305 - 1) * 14);
+			if v301 then
+				v304.Center = true;
+				v304.Position = v302.Position + Vector2.new(v302.Size.X / 2, 0);
+			end
+			if v300 then
+				v304.Position = v302.Position + Vector2.new(20, (v305 - 1) * 14);
+			end
+			return v304;
+		end;
+		v108.Update = function(v309)
+			v108:Clear();
+			v108.Main.Transparency = 1;
+			v108.Top.Transparency = 1;
+			v108.Size = Vector2.new(170, 14);
+			v2 = game.Players;
+			local v314, v315 = {}, true;
+			if v315 then
+				for v560, v561 in pairs(v2:GetPlayers()) do
+					if ((v561 ~= game.Players.LocalPlayer) and v561.Character and v561.Character:FindFirstChild("HumanoidRootPart") and v561.Character:FindFirstChildOfClass("Humanoid")) then
+						table.insert(v314, v561.Character);
+					end
+				end
+			end
+			local v316, v317, v318 = nil, math.huge, math.huge;
+			for v366, v367 in pairs(v314) do
+				local v368 = v367.PrimaryPart;
+				if v368 then
+					local v562, v563 = v0.CurrentCamera:WorldToViewportPoint(v368.Position);
+					if v563 then
+						local v741 = ((v0.CurrentCamera.ViewportSize / 2) - Vector2.new(v562.X, v562.Y)).Magnitude;
+						if (v741 < v318) then
+							v318 = v741;
+							v316 = v367;
+						end
+					end
+				end
+			end
+			if not v316 then
+				v108:Clear();
+				v108:AddText("Inventory Viewer", false, true);
+				return;
+			end
+			local v319 = v316:FindFirstChildOfClass("Humanoid");
+			v108:Clear();
+			local v320 = v108:AddText(v316.Name, false, true);
+			v314 = {};
+			local v321 = 0;
+			local v322 = (game:GetService("ReplicatedStorage")).Players[v316.Name];
+			if (v319 and v322) then
+				table.insert(v314, v322.Inventory);
+				table.insert(v314, v322.Clothing);
+				for v564, v565 in pairs(v314) do
+					local v566 = v565.Name;
+					if (v566 == "Inventory") then
+                        if v789 and type(v789) == "userdata" then
+                            for v788, v789 in pairs(v789:GetChildren()) do
+                                local v790 = v789:FindFirstChild("ItemProperties");
+                                if v790 then
+								local v888 = "";
+								local v889 = false;
+								local v890 = v790:GetAttribute("ItemType");
+								if (v890 and (v890 == "RangedWeapon")) then
+									v889 = true;
+									local v922 = v789:FindFirstChild("Attachments");
+									if v922 then
+										local v932 = v922:FindFirstChild("Magazine");
+										if v932 then
+											v932 = v932:FindFirstChildOfClass("StringValue");
+											if v932 then
+												local v965 = v932:FindFirstChild("ItemProperties");
+												if v965 then
+													local v966 = v965:FindFirstChild("LoadedAmmo");
+													if v966 then
+														for v967, v968 in pairs(v967:GetChildren()) do
+															local v969, v970 = v968:GetAttribute("AmmoType"), v968:GetAttribute("Amount");
+															if (v969 and v970) then
+																v888 = v888 .. v970 .. " - " .. v969:gsub("Tracer", "T") .. "; ";
+															end
+														end
+													end
+												end
+											end
+										end
+									end
+								end
+								if ((v888 == "") and (v889 == false)) then
+									v108:AddText("[Hotbar] " .. v789.Name);
+								elseif (v888 == "") then
+									local v933 = v108:AddText("[Hotbar] " .. v789.Name .. " [OUT OF AMMO]");
+									local v934 = v933.TextBounds.X;
+									if (v934 > v321) then
+										v321 = v934;
+									end
+									if (v321 > v108.Size.X) then
+										v108.Size = Vector2.new(v321 + 10, v108.Main.Size.Y);
+										v108.Main.Size = v108.Size;
+										v320.Position = v108.Main.Position + Vector2.new(v108.Main.Size.X / 2, 0);
+									end
+								else
+									v888 = v888:sub(0, v888:len() - 2);
+									local v935 = v108:AddText("[Hotbar] " .. v789.Name .. " [" .. v888 .. "]");
+									local v936 = v935.TextBounds.X;
+									if (v936 > v321) then
+										v321 = v936;
+									end
+									if (v321 > v108.Size.X) then
+										v108.Size = Vector2.new(v321 + 10, v108.Main.Size.Y);
+										v108.Main.Size = v108.Size;
+										v320.Position = v108.Main.Position + Vector2.new(v108.Main.Size.X / 2, 0);
+									end
+								end
+							else
+								v108:AddText("[Hotbar] " .. v789.Name);
+							end
+						end
+					elseif (v566 == "Clothing") then
+						for v891, v892 in pairs(v892:GetChildren()) do
+							local v893 = v892:FindFirstChild("Attachments");
+							local v894 = "";
+							if v893 then
+								for v925, v926 in pairs(v893:GetChildren()) do
+									local v927 = v926:FindFirstChildOfClass("StringValue");
+									if v927 then
+										v894 = v894 .. v927.Name .. "; ";
+									end
+								end
+							end
+							v894 = v894:sub(0, v894:len() - 2);
+							if (v894 == "") then
+								v108:AddText(v892.Name);
+							else
+								local v923 = v108:AddText(v892.Name .. " [" .. v894 .. "]");
+								local v924 = v923.TextBounds.X;
+								if (v924 > v321) then
+									v321 = v924;
+								end
+								if (v321 > v108.Size.X) then
+									v108.Size = Vector2.new(v321 + 10, v108.Main.Size.Y);
+									v108.Main.Size = v108.Size;
+									v320.Position = v108.Main.Position + Vector2.new(v108.Main.Size.X / 2, 0);
+								end
+							end
+							local v895 = v892:FindFirstChild("Inventory");
+							if v895 then
+								for v928, v929 in pairs(v895:GetChildren()) do
+									local v930 = v929:FindFirstChild("ItemProperties");
+									if v930 then
+										local v940 = v930:GetAttribute("Amount");
+										if v940 then
+											if (v940 > 1) then
+												v108:AddText(v929.Name .. " [" .. tostring(v940) .. "]", true);
+											else
+												v108:AddText(v929.Name, true);
+											end
+										else
+											v108:AddText(v929.Name, true);
+										end
+									else
+										v108:AddText(v929.Name, true);
+									end
+								end
+							end
+						end
+					end
+				end
+            end
+			else
+				local v434 = v316:FindFirstChild("Inventory");
+				if v434 then
+					for v742, v743 in pairs(v742:GetChildren()) do
+						local v744 = v743:FindFirstChild("ItemProperties");
+						if v744 then
+							local v875 = v744:GetAttribute("Amount");
+							if v875 then
+								if (v875 > 1) then
+									v108:AddText(v743.Name .. " [" .. tostring(v875) .. "]");
+								else
+									v108:AddText(v743.Name);
+								end
+							else
+								v108:AddText(v743.Name);
+							end
+						else
+							v108:AddText(v743.Name);
+						end
+					end
+				end
+			end
+		end;
+		task.spawn(function()
+			while wait(Options.delayv.Value) do
+				if Toggles.invview.Value then
+					v108:Update();
 				else
-					m = w[3]
-				end
-				repeat
-					wait()
-				until m ~= nil
-				if typeof(m) == "Vector3" then
-					local z, h = workspace.CurrentCamera:WorldToViewportPoint(m)
-					local R = false
-					local c = Instance.new("Part")
-					c.CanCollide = false
-					c.Anchored = true
-					c.Parent = workspace
-					local V = Instance.new("Attachment")
-					V.Position = workspace.Ignore.LocalCharacter.Middle.Position
-					V.Parent = c
-					V.Visible = false
-					local F = Instance.new("Attachment")
-					F.Position = m
-					F.Parent = c
-					F.Visible = false
-					local _ = Instance.new("Beam")
-					_.Enabled = Markeroid.HitTracer.Enabled
-					_.Brightness = 10
-					_.LightInfluence = 0.75
-					_.LightEmission = 0.1
-					_.Attachment0 = V
-					_.Attachment1 = F
-					_.Texture = Markeroid.HitTracer.Texture
-					_.TextureLength = 7
-					_.TextureMode = "Stretch"
-					_.TextureSpeed = 6.21
-					_.Color = ColorSequence.new({
-						ColorSequenceKeypoint.new(0, Markeroid.HitTracer.Color),
-						ColorSequenceKeypoint.new(0.5, Markeroid.HitTracer.Color),
-						ColorSequenceKeypoint.new(1, Markeroid.HitTracer.Color),
-					})
-					_.Transparency = NumberSequence.new(0)
-					_.Parent = c
-					_.CurveSize0 = 0
-					_.CurveSize1 = 0
-					_.FaceCamera = true
-					_.Segments = 10
-					_.Width0 = 2
-					_.Width1 = 2
-					_.ZOffset = 0
-					wait(1)
-					c:Destroy()
-				end
-			end)
-		end
-		return _f(G, unpack(w))
-	end)
-)
-
-local PlayerVisualTabbox = Tabs.Visual:AddLeftTabbox()
-local PlayerVisualTab = PlayerVisualTabbox:AddTab("Players")
-local PlayerSettingsVisualTab = PlayerVisualTabbox:AddTab("Settings")
-local PlayerVisualTabbox = Tabs.Visual:AddRightTabbox()
-local World = PlayerVisualTabbox:AddTab("World ESP")
-local PlayerVisualTabbox = Tabs.Visual:AddRightTabbox()
-local Skin = PlayerVisualTabbox:AddTab("SkinChanger")
-
-PlayerVisualTab:AddToggle("Boxes", { Text = "Boxes", Default = false })
-	:AddColorPicker("BoxesColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-	:AddColorPicker("BoxesOutlineColor", { Default = Color3.fromRGB(0, 0, 0), Title = "Color" })
-PlayerVisualTab:AddToggle("Sleeping", { Text = "Sleeping", Default = false })
-	:AddColorPicker("SleepingColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-PlayerVisualTab:AddToggle("Distances", { Text = "Distance", Default = false })
-	:AddColorPicker("DistancesColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-PlayerVisualTab:AddToggle("Armour", { Text = "Armour", Default = false })
-	:AddColorPicker("ArmourColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-PlayerVisualTab:AddToggle("Tool", { Text = "Tool", Default = false })
-	:AddColorPicker("ToolColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-PlayerVisualTab:AddToggle("ViewAngle", { Text = "View Angle", Default = false })
-	:AddColorPicker("ViewAngleColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
-PlayerVisualTab:AddToggle("Tracer", { Text = "Tracer", Default = false })
-	:AddColorPicker("TracerColor", { Default = Color3.fromRGB(155, 95, 255), Title = "Color" })
--- STORAGE
-World:AddToggle("STORAGEfag", { Text = "Crate ESP", Default = false }):OnChanged(function(monkey99)
-	if monkey99 then
-		local function onPartAdded(part)
-			if
-				part:IsA("Part")
-				and part.BrickColor == BrickColor.new("Linen")
-				and part.Material == Enum.Material.WoodPlanks
-			then
-				local parent = part.Parent
-				if parent and parent:IsA("Model") and #parent:GetChildren() == 2 then
-					local MilitaryEsp = Instance.new("BoxHandleAdornment")
-					MilitaryEsp.Adornee = part
-					MilitaryEsp.AlwaysOnTop = true
-					MilitaryEsp.ZIndex = 0
-					MilitaryEsp.Size = part.Size
-					MilitaryEsp.Name = "MilitaryCrate"
-					MilitaryEsp.Transparency = 0.3
-					MilitaryEsp.Color = BrickColor.new("Dark Royal blue")
-					MilitaryEsp.Parent = workspace.Monkey.StorageESPAdornee
+					v108:Clear();
 				end
 			end
-		end
-
-		workspace.DescendantAdded:Connect(onPartAdded)
-
-		wait(1.5)
-
-		local parts = workspace:GetDescendants()
-		local meshes = {}
-		for _, part in ipairs(parts) do
-			if
-				part:IsA("UnionOperation")
-				and part.BrickColor == BrickColor.new("Cashmere")
-				and part.Material == Enum.Material.Plastic
-			then
-				local PartCrateEsp = Instance.new("BoxHandleAdornment")
-				PartCrateEsp.Adornee = part
-				PartCrateEsp.AlwaysOnTop = true
-				PartCrateEsp.ZIndex = 0
-				PartCrateEsp.Size = part.Size
-				PartCrateEsp.Name = "PartCrate"
-				PartCrateEsp.Transparency = 0.3
-				PartCrateEsp.Color = BrickColor.new("Bright yellow")
-				PartCrateEsp.Parent = workspace.Monkey.StorageESPAdornee
+		end);
+		task.spawn(function()
+			while true do
+				if Toggles.leanaa.Value then
+					(game:GetService("ReplicatedStorage")).Remotes.UpdateLeaning:FireServer(unpack({[1]=true}));
+					wait(Options.leandel.Value);
+					(game:GetService("ReplicatedStorage")).Remotes.UpdateLeaning:FireServer(unpack({[1]=false}));
+				end
+				wait(Options.leandel.Value);
 			end
-		end
-
-		local function onPartAdded(part)
-			if
-				part:IsA("UnionOperation")
-				and part.BrickColor == BrickColor.new("Cashmere")
-				and part.Material == Enum.Material.Plastic
-			then
-				local UpdatePartCrateEsp = Instance.new("BoxHandleAdornment")
-				UpdatePartCrateEsp.Adornee = part
-				UpdatePartCrateEsp.AlwaysOnTop = true
-				UpdatePartCrateEsp.ZIndex = 0
-				UpdatePartCrateEsp.Size = part.Size
-				UpdatePartCrateEsp.Name = "PartCrate"
-				UpdatePartCrateEsp.Transparency = 0.3
-				UpdatePartCrateEsp.Color = BrickColor.new("Bright yellow")
-				UpdatePartCrateEsp.Parent = workspace.Monkey.StorageESPAdornee
-			end
-		end
-
-		workspace.DescendantAdded:Connect(onPartAdded)
-	else
-		for _, v in ipairs(workspace.Monkey.StorageESPAdornee:GetDescendants()) do
-			v:Destroy()
-		end
-	end
-end)
-
--- TOTEMS
--- ORES
-World:AddToggle("ore4s3", { Text = "Stone ESP", Default = false }):OnChanged(function(monkey4)
-	if monkey4 then
-		local function adornStoneOre(part)
-			if
-				part:IsA("MeshPart")
-				and part.BrickColor == BrickColor.new("Flint")
-				and part.Material == Enum.Material.Limestone
-			then
-				local parent = part.Parent
-				if parent and parent:IsA("Model") and #parent:GetChildren() == 1 then
-					local StoneEsp = Instance.new("BoxHandleAdornment")
-					StoneEsp.Adornee = part
-					StoneEsp.AlwaysOnTop = true
-					StoneEsp.ZIndex = 0
-					StoneEsp.Size = part.Size
-					StoneEsp.Name = "Stone"
-					StoneEsp.Transparency = 0.3
-					StoneEsp.Color = BrickColor.new("Grey")
-					StoneEsp.Parent = workspace.Monkey.OreESPAdornee
+		end);
+		local v112 = (v3.Character and v3.Character:FindFirstChildOfClass("Humanoid") and (v3.Character:FindFirstChildOfClass("Humanoid")).AutoRotate) or true;
+		local v113 = CFrame.new();
+		local v114 = false;
+		(game:GetService("RunService")).RenderStepped:Connect(function(v323)
+			FPS = FPS + 1;
+			if Toggles.HitSoundEnabled.Value then
+				if FoundHit then
+					FoundHit = false;
+					local v662 = HitTarget;
+					if ((v662.Name:lower()):find("head") or (v662.Name:lower()):find("face")) then
+						HeadSound:Play();
+					else
+						BodySound:Play();
+					end
 				end
 			end
-		end
-
-		local function onPartAdded(part)
-			adornStoneOre(part)
-		end
-
-		for _, part in ipairs(workspace:GetDescendants()) do
-			adornStoneOre(part)
-		end
-
-		workspace.DescendantAdded:Connect(onPartAdded)
-	else
-		for _, v in ipairs(workspace.Monkey.OreESPAdornee:GetDescendants()) do
-			if v.Name == "Stone" then
-				v:Destroy()
+			v16.Position = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			v25.Position = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			v57.From = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			v57.To = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			v64.From = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			v64.To = Vector2.new(v1.ViewportSize.X / 2, v1.ViewportSize.Y / 2);
+			local v330 = v3.Character;
+			local v331, v332 = v330 and v330:FindFirstChild("HumanoidRootPart"), v330 and v330:FindFirstChildOfClass("Humanoid");
+			if (not v330 or not v331 or not v332) then
+				return;
 			end
-		end
-	end
-end)
-
-World:AddToggle("ores2", { Text = "Iron ESP", Default = false }):OnChanged(function(monkey3)
-	if monkey3 then
-		local parts = workspace:GetDescendants()
-		local meshes = {}
-		for _, part in ipairs(parts) do
-			if
-				part:IsA("MeshPart")
-				and part.BrickColor == BrickColor.new("Burlap")
-				and part.Material == Enum.Material.Slate
-			then
-				local IronEsp = Instance.new("BoxHandleAdornment")
-				IronEsp.Adornee = part
-				IronEsp.AlwaysOnTop = true
-				IronEsp.ZIndex = 0
-				IronEsp.Size = part.Size
-				IronEsp.Name = "Iron"
-				IronEsp.Transparency = 0.3
-				IronEsp.Color = BrickColor.new("Burlap")
-				IronEsp.Parent = workspace.Monkey.OreESPAdornee
+			if Toggles.aaenabled.Value then
+				v332.AutoRotate = false;
+				local v436;
+				do
+					v436 = -math.atan2(v1.CFrame.LookVector.Z, v1.CFrame.LookVector.X) + math.rad(-90);
+					if (Options.yawbase.Value == "random") then
+						v436 = -math.atan2(v1.CFrame.LookVector.Z, v1.CFrame.LookVector.X) + math.rad(math.random(0, 360));
+					elseif (Options.yawbase.Value == "spin") then
+						v436 = -math.atan2(v1.CFrame.LookVector.Z, v1.CFrame.LookVector.X) + ((tick() * 10) % 360);
+					end
+				end
+				local v437 = math.rad(Options.yawoff.Value);
+				v114 = not v114;
+				if v114 then
+					if (Options.yawm.Value == "jitter") then
+						v437 = math.rad(Options.modoff.Value);
+					elseif (Options.yawm.Value == "offset jitter") then
+						v437 = v437 + math.rad(Options.modoff.Value);
+					end
+				end
+				local v438 = CFrame.new(v331.Position) * CFrame.Angles(0, v436 + v437, 0);
+				local function v439(v567)
+					local v568, v569, v570 = v567:ToOrientation();
+					return CFrame.new(v567.Position) * CFrame.Angles(0, v569, 0);
+				end
+				if (Options.yawbase.Value == "targets") then
+					local v663;
+					local v664 = 9999;
+					for v745, v746 in next, v745:GetPlayers() do
+						if (not v746.Character or not v746.Character:FindFirstChild("HumanoidRootPart")) then
+							continue;
+						end
+						local v747, v748 = v1:WorldToViewportPoint(v746.Character.HumanoidRootPart.Position);
+						local v749 = (Vector2.new(v747.X, v747.Y) - Vector2.new(v8.X, v8.Y)).Magnitude;
+						if (v664 > v749) then
+							v663 = v746.Character.HumanoidRootPart;
+							v664 = v749;
+						end
+					end
+					if (v663 ~= nil) then
+						v438 = CFrame.new(v331.Position, v663.Position) * CFrame.Angles(0, 0, 0);
+					end
+				end
+				v113 = v436 + v437;
+				v331.CFrame = v439(v438);
+			else
+				v332.AutoRotate = v112;
 			end
-		end
-
-		local function onPartAdded(part)
-			if
-				part:IsA("MeshPart")
-				and part.BrickColor == BrickColor.new("Burlap")
-				and part.Material == Enum.Material.Slate
-			then
-				if monkey3 then
-					local UpdateIronEsp = Instance.new("BoxHandleAdornment")
-					UpdateIronEsp.Adornee = part
-					UpdateIronEsp.AlwaysOnTop = true
-					UpdateIronEsp.ZIndex = 0
-					UpdateIronEsp.Size = part.Size
-					UpdateIronEsp.Name = "Iron"
-					UpdateIronEsp.Transparency = 0.3
-					UpdateIronEsp.Color = BrickColor.new("Burlap")
-					UpdateIronEsp.Parent = workspace.Monkey.OreESPAdornee
+			if Toggles.CEnabled.Value then
+				local v442 = GetTargetS();
+				local v443 = GetTargetA();
+				local v444 = getbulletatribute("MuzzleVelocity");
+				local v445 = getbulletatribute("ProjectileDrop");
+				if (Toggles.AEnabled.Value and Toggles.CEnabled.Value and v443) then
+					local v665 = v443.Position;
+					if (Toggles.OldPredic and v444) then
+						local v791 = (v443.Position - v1.CFrame.p).Magnitude / v444;
+						v665 = v443.Position + ((v443.Parent:FindFirstChild("HumanoidRootPart")).Velocity * v791);
+					end
+					if Holding then
+						v1.CFrame = CFrame.new(v1.CFrame.Position, v665);
+					end
+				end
+				if (Toggles.SEnabled.Value and Toggles.CEnabled.Value and v442) then
+					local v666 = v442.Position;
+					if (Toggles.OldPredic and v444) then
+						local v793 = (v442.Position - v1.CFrame.p).Magnitude / v444;
+						v666 = v442.Position + ((v442.Parent:FindFirstChild("HumanoidRootPart")).Velocity * v793);
+					end
+					local v667 = false;
+					if (Options.HitchanceS.Value <= math.random(1, 100)) then
+						v667 = true;
+					end
+					if v667 then
+						local v794 = math.random(1, 4);
+						if (v794 == 1) then
+							v666 = v666 + Vector3.new(0, 10, 0);
+						elseif (v794 == 2) then
+							v666 = v666 + Vector3.new(0, -10, 0);
+						elseif (v794 == 3) then
+							v666 = v666 + Vector3.new(10, 0, 0);
+						elseif (v794 == 4) then
+							v666 = v666 + Vector3.new(-10, 0, 0);
+						end
+					end
+					SilentTarget = v666;
+				else
+					SilentTarget = false;
 				end
 			end
-		end
-
-		workspace.DescendantAdded:Connect(onPartAdded)
-	else
-		for _, v in ipairs(workspace.Monkey.OreESPAdornee:GetDescendants()) do
-			if v.Name == "Iron" then
-				v:Destroy()
+			if (Toggles.VisualsEnabled.Value and Toggles.ZoomEnabled.Value) then
+				v1.FieldOfView = Options.ZoomAmount.Value;
 			end
-		end
-	end
-end)
-
-World:AddToggle("ores", { Text = "Nitrate ESP", Default = false }):OnChanged(function(monkey2)
-	if monkey2 then
-		local parts = workspace:GetDescendants()
-		local meshes = {}
-		for _, part in ipairs(parts) do
-			if
-				part:IsA("MeshPart")
-				and part.BrickColor == BrickColor.new("Institutional white")
-				and part.Material == Enum.Material.Slate
-			then
-				local NitrateEsp = Instance.new("BoxHandleAdornment")
-				NitrateEsp.Adornee = part
-				NitrateEsp.AlwaysOnTop = true
-				NitrateEsp.ZIndex = 0
-				NitrateEsp.Name = "Nitrate"
-				NitrateEsp.Size = part.Size
-				NitrateEsp.Transparency = 0.3
-				NitrateEsp.Color = BrickColor.new("Institutional white")
-				NitrateEsp.Parent = workspace.Monkey.OreESPAdornee
+			if Toggles.FullBrightEnabled.Value then
+				(game:GetService("Lighting")).Brightness = 2;
+				(game:GetService("Lighting")).ClockTime = 14;
+				(game:GetService("Lighting")).FogEnd = 100000;
+				(game:GetService("Lighting")).GlobalShadows = false;
+				(game:GetService("Lighting")).OutdoorAmbient = Color3.fromRGB(128, 128, 128);
 			end
-		end
-
-		local function onPartAdded(part)
-			if
-				part:IsA("MeshPart")
-				and part.BrickColor == BrickColor.new("Institutional white")
-				and part.Material == Enum.Material.Slate
-			then
-				if monkey2 then
-					local UpdateNitrateEsp = Instance.new("BoxHandleAdornment")
-					UpdateNitrateEsp.Adornee = part
-					UpdateNitrateEsp.AlwaysOnTop = true
-					UpdateNitrateEsp.ZIndex = 0
-					UpdateNitrateEsp.Size = part.Size
-					UpdateNitrateEsp.Name = "Nitrate"
-					UpdateNitrateEsp.Transparency = 0.3
-					UpdateNitrateEsp.Color = BrickColor.new("Institutional white")
-					UpdateNitrateEsp.Parent = workspace.Monkey.OreESPAdornee
+			if (Toggles.serverinforemove.Value and serverLabel) then
+				serverLabel.Text = "";
+			end
+			if Toggles.atmosphereremover.Value then
+				local v454 = (game:GetService("Lighting")):FindFirstChildOfClass("Atmosphere");
+				if v454 then
+					v454.Parent = (State and CoreGui) or Lighting;
 				end
 			end
-		end
-
-		workspace.DescendantAdded:Connect(onPartAdded)
-	else
-		for _, v in ipairs(workspace.Monkey.OreESPAdornee:GetDescendants()) do
-			if v.Name == "Nitrate" then
-				v:Destroy()
-			end
-		end
-	end
-end)
-
---Esp Switches
-Toggles.ViewAngle:OnChanged(function(Value)
-	Esp.Settings.ViewAngle = Value
-end)
-Options.ViewAngleColor:OnChanged(function(Value)
-	Esp.Settings.ViewAngleColor = Value
-end)
-Toggles.Tracer:OnChanged(function(Value)
-	Esp.Settings.Tracer = Value
-end)
-Options.TracerColor:OnChanged(function(Value)
-	Esp.Settings.TracerColor = Value
-end)
-Toggles.Armour:OnChanged(function(Value)
-	Esp.Settings.Armour = Value
-end)
-Options.ToolColor:OnChanged(function(Value)
-	Esp.Settings.ToolColor = Value
-end)
-Toggles.Tool:OnChanged(function(Value)
-	Esp.Settings.Tool = Value
-end)
-Options.ArmourColor:OnChanged(function(Value)
-	Esp.Settings.ArmourColor = Value
-end)
-Toggles.Armour:OnChanged(function(Value)
-	Esp.Settings.Armour = Value
-end)
-Toggles.Distances:OnChanged(function(Value)
-	Esp.Settings.Distances = Value
-end)
-Options.DistancesColor:OnChanged(function(Value)
-	Esp.Settings.DistanceColor = Value
-end)
-Options.SleepingColor:OnChanged(function(Value)
-	Esp.Settings.SleepingColor = Value
-end)
-Toggles.Sleeping:OnChanged(function(Value)
-	Esp.Settings.Sleeping = Value
-end)
-Options.BoxesColor:OnChanged(function(Value)
-	Esp.Settings.BoxesColor = Value
-end)
-Options.BoxesOutlineColor:OnChanged(function(Value)
-	Esp.Settings.BoxesOutlineColor = Value
-end)
-Toggles.Boxes:OnChanged(function(Value)
-	Esp.Settings.Boxes = Value
-end)
-PlayerSettingsVisualTab:AddSlider(
-	"RenderDistance",
-	{ Text = "Render Distance", Default = 1500, Min = 1, Max = 1500, Rounding = 0, Compact = false, Suffix = "s" }
-):OnChanged(function(Value)
-	Esp.Settings.RenderDistance = Value
-end)
-PlayerSettingsVisualTab:AddToggle("TargetSleepers", { Text = "Dont Show Sleepers", Default = false })
-	:OnChanged(function(Value)
-		Esp.Settings.TargetSleepers = Value
-	end)
-PlayerSettingsVisualTab:AddToggle("BoxesOutlines", { Text = "Box Outlines", Default = false }):OnChanged(function(Value)
-	Esp.Settings.BoxesOutline = Value
-end)
-PlayerSettingsVisualTab:AddToggle("TeamCheck", { Text = "Team Check", Default = false }):OnChanged(function(Value)
-	Esp.Settings.TeamCheck = Value
-end)
-PlayerSettingsVisualTab:AddToggle("TextOutline", { Text = "Text Outlines", Default = false }):OnChanged(function(Value)
-	Esp.Settings.TextOutline = Value
-end)
-PlayerSettingsVisualTab:AddDropdown(
-	"TracerPosition",
-	{ Values = { "Bottom", "Middle", "Top" }, Default = 1, Multi = false, Text = "Tracer Position" }
-):OnChanged(function(Value)
-	Esp.Settings.TracerFrom = Value
-end)
-
---Misc
-local LightingTabbox = Tabs.Misc:AddLeftTabbox()
-local LightingTab = LightingTabbox:AddTab("Visuals")
-local MiscTabbox = Tabs.Misc:AddRightTabbox()
-local MiscTab = MiscTabbox:AddTab("Character Exploits")
-local MiscTabbox = Tabs.Misc:AddRightTabbox()
-local Bullets = MiscTabbox:AddTab("Customization")
-
--- SKIN Changer
-local SkinChoice = "Galaxy"
-local SkinRBxId = 0
-local SkinsEnabled = false
-
-local Framework = {
-	Settings = { FullBright = false, Fov = 90, LocalChams = false, LocalGunChams = false },
-	SkinChanger = { SkinsEnabled = false, SkinChoice = "Galaxy", SkinName = "Float", SkinRBXAssetId = 12319249626 },
-}
-function Framework:CheckSkins()
-	local tbl = {}
-	for i, v in pairs(game:GetService("ReplicatedStorage").ItemSkins:GetChildren()) do
-		table.insert(tbl, v.Name)
-	end
-	return tbl
-end
-function Framework:SetCammo(SkinName)
-	if
-		not require(game:GetService("ReplicatedStorage").ItemConfigs[getrenv()._G.modules.FPS.GetEquippedItem().id]).HandModel
-	then
-		return
-	end
-	local GunName = require(
-		game:GetService("ReplicatedStorage").ItemConfigs[getrenv()._G.modules.FPS.GetEquippedItem().id]
-	).HandModel
-	if table.find(Framework:CheckSkins(), GunName) then
-		local SkinFolder = game:GetService("ReplicatedStorage").ItemSkins[GunName]
-		if game:GetService("ReplicatedStorage").ItemSkins[GunName]:FindFirstChild(GunName .. "_" .. SkinName) then
-			local SkinChosen = game:GetService("ReplicatedStorage").ItemSkins[GunName][GunName .. "_" .. SkinName]
-			require(SkinChosen).ApplyToModel(game:GetService("Workspace").Ignore.FPSArms.HandModel)
-		end
-	end
-end
-
-game:GetService("Workspace").Ignore.FPSArms.ChildAdded:Connect(function()
-	if game:GetService("Workspace").Ignore.FPSArms:WaitForChild("HandModel") and SkinsEnabled == true then
-		Framework:SetCammo(SkinChoice)
-	end
-end)
-
-for i, v in pairs(game:GetService("ReplicatedStorage").ItemSkins:GetChildren()) do
-	if v:FindFirstChild(v.Name .. "_" .. "Galaxy") then
-		local clone = v:FindFirstChild(v.Name .. "_" .. "Galaxy"):Clone()
-		clone.Parent = game:GetService("ReplicatedStorage").ItemSkins[v.Name]
-		clone.Name = v.Name .. "_Frozen"
-	end
-end
-
-Skin:AddToggle("SkinsEnabled", { Text = "Enabled", Default = false })
-Skin:AddDropdown("SkinChoice", { Values = { "Galaxy" }, Default = 1, Multi = false, Text = "Skin:" })
-Skin:AddInput(
-	"SkinName",
-	{ Default = "Skin", Numeric = false, Finished = false, Text = "Name:", Placeholder = "Skin Name" }
-)
-Skin:AddInput(
-	"SkinRBXAssetId",
-	{ Default = 0, Numeric = true, Finished = true, Text = "Asset Id:", Placeholder = "RbxId" }
-)
-Skin:AddButton("Load Skin", function()
-	for i, v in pairs(game:GetService("ReplicatedStorage").ItemSkins:GetChildren()) do
-		if v:FindFirstChild(v.Name .. "_" .. "Galaxy") and not v:FindFirstChild(v.Name .. "_" .. SkinChoice) then
-			local clone = v:FindFirstChild(v.Name .. "_" .. "Galaxy"):Clone()
-			clone.Parent = game:GetService("ReplicatedStorage").ItemSkins[v.Name]
-			clone.Name = v.Name .. "_" .. SkinChoice
-			setconstant(require(clone).ApplyToModel, 3, "rbxassetid://" .. SkinRBxId)
-		end
-	end
-	Framework:SetCammo(SkinChoice)
-end)
-Skin:AddButton("Save Skin", function()
-	writefile(
-		"AstralPro/Skins/" .. SkinChoice .. ".skin",
-		game:GetService("HttpService"):JSONEncode({ Id = SkinRBxId, Name = SkinChoice })
-	)
-end)
-
-Toggles.SkinsEnabled:OnChanged(function()
-	SkinsEnabled = Toggles.SkinsEnabled.Value
-end)
-Options.SkinName:OnChanged(function()
-	SkinChoice = Options.SkinName.Value
-end)
-Options.SkinRBXAssetId:OnChanged(function()
-	SkinRBxId = Options.SkinRBXAssetId.Value
-end)
-Options.SkinChoice:OnChanged(function()
-	SkinChoice = Options.SkinChoice.Value
-end)
-
-Bullets:AddLabel("Custom Inventory:"):AddColorPicker("Inventory_Color", { Default = Color3.fromRGB(80, 80, 80) })
-Options.Inventory_Color:OnChanged(function(Inventory_Color_Value)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Armor.ItemSlot26.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Armor.ItemSlot27.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Armor.ItemSlot28.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Armor.ItemSlot29.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot6.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot7.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot8.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot9.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot10.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot11.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot12.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot13.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot14.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot15.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot16.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot17.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot18.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot19.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot20.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot21.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot22.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot23.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot24.BackgroundColor3 =
-		Inventory_Color_Value
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.ItemSlot25.BackgroundColor3 =
-		Inventory_Color_Value
-end)
-
-Bullets:AddLabel("Energy:"):AddColorPicker("Energy_Color_Value", { Default = Color3.fromRGB(197, 187, 40) })
-Options.Energy_Color_Value:OnChanged(function(Energy_Color_Value)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.Vitals.EnergyFrame.Energy.BackgroundColor3 =
-		Energy_Color_Value
-end)
-
-Bullets:AddLabel("Health:"):AddColorPicker("Health_Color_Value", { Default = Color3.fromRGB(78, 153, 74) })
-Options.Health_Color_Value:OnChanged(function(Health_Color_Value)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.Vitals.HealthFrame.Health.BackgroundColor3 =
-		Health_Color_Value
-end)
-
-Bullets:AddLabel("Ammo:"):AddColorPicker("Ammo_Color_Value", { Default = Color3.fromRGB(255, 255, 255) })
-Options.Ammo_Color_Value:OnChanged(function(Ammo_Color_Value)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Ammo.TextColor3 = Ammo_Color_Value
-end)
-
-Bullets:AddSlider(
-	"Vitals_Transparency",
-	{ Text = "Vitals Transparency", Suffix = "%", Default = 0.1, Min = 0, Max = 1, Rounding = 2, Compact = true }
-):OnChanged(function(VitalsTransparency)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.Vitals.EnergyFrame.Energy.BackgroundTransparency =
-		VitalsTransparency
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.Vitals.HealthFrame.Health.BackgroundTransparency =
-		VitalsTransparency
-end)
-
-Bullets:AddSlider(
-	"Background_Transparency",
-	{ Text = "Inventory Transparency", Suffix = "%", Default = 0.7, Min = 0, Max = 1, Rounding = 2, Compact = true }
-):OnChanged(function(InventoryTransparency)
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Inventory.BackgroundTransparency =
-		InventoryTransparency
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Hotbar.BackgroundTransparency =
-		InventoryTransparency
-	game:GetService("Players").LocalPlayer.PlayerGui.GameUI.FPS.BottomCenter.Armor.BackgroundTransparency =
-		InventoryTransparency
-end)
-
-local Terrain = game:GetService("Workspace").Terrain
-local GCEN = Color3.fromRGB(93, 111, 55)
-local GRCEND = false
-
-LightingTab:AddToggle("CLRG", { Text = "Color Grass", Default = true, Tooltip = "Off/On" })
-	:AddColorPicker("ColorGrass", { Default = GCEN, Title = "Changer Color Grass" })
-Toggles.CLRG:OnChanged(function(T)
-	GRCEND = T
-	Terrain:SetMaterialColor(Enum.Material.Grass, T and GCEN or Color3.fromRGB(93, 111, 55))
-end)
-Options.ColorGrass:OnChanged(function(Grass1)
-	if GRCEND then
-		GCEN = Grass1
-		Terrain:SetMaterialColor(Enum.Material.Grass, Grass1)
-	end
-end)
-
-local Terrain = game:GetService("Workspace").Terrain
-local CloudsColor = Color3.fromRGB(255, 255, 255)
-local EnableCustomColor = false
-
-LightingTab:AddToggle("CLRG1", { Text = "Clouds Color", Default = EnableCustomColor, Tooltip = "Off/On" })
-	:AddColorPicker("ColorGrass1", { Default = CloudsColor, Title = "Change Clouds Color" })
-Toggles.CLRG1:OnChanged(function(T)
-	EnableCustomColor = T
-	Terrain.Clouds.Color = T and CloudsColor or Color3.fromRGB(255, 255, 255)
-end)
-Options.ColorGrass1:OnChanged(function(NewColor)
-	if EnableCustomColor then
-		CloudsColor = NewColor
-		Terrain.Clouds.Color = NewColor
-	end
-end)
-local CARMS = false
-LightingTab:AddToggle("CLRT", { Text = "Arm Color", Default = false, Tooltip = "Off/On" })
-	:AddColorPicker("ARCCCC", { Default = Color3.fromRGB(0, 0, 0), Title = "Arms Color" })
-Options.ARCCCC:OnChanged(function(ARMC)
-	if CARMS then
-		game:GetService("Workspace").Ignore.FPSArms.LeftUpperArm.Color = ARMC
-		game:GetService("Workspace").Ignore.FPSArms.LeftLowerArm.Color = ARMC
-		game:GetService("Workspace").Ignore.FPSArms.LeftHand.Color = ARMC
-		game:GetService("Workspace").Ignore.FPSArms.RightUpperArm.Color = ARMC
-		game:GetService("Workspace").Ignore.FPSArms.RightLowerArm.Color = ARMC
-		game:GetService("Workspace").Ignore.FPSArms.RightHand.Color = ARMC
-	else
-		game:GetService("Workspace").Ignore.FPSArms.LeftUpperArm.BrickColor = BrickColor.new("Dark stone grey")
-		game:GetService("Workspace").Ignore.FPSArms.LeftLowerArm.BrickColor = BrickColor.new("Linen")
-		game:GetService("Workspace").Ignore.FPSArms.LeftHand.BrickColor = BrickColor.new("Linen")
-		game:GetService("Workspace").Ignore.FPSArms.RightUpperArm.BrickColor = BrickColor.new("Dark stone grey")
-		game:GetService("Workspace").Ignore.FPSArms.RightLowerArm.BrickColor = BrickColor.new("Linen")
-		game:GetService("Workspace").Ignore.FPSArms.RightHand.BrickColor = BrickColor.new("Linen")
-	end
-end)
-Toggles.CLRT:OnChanged(function(T)
-	CARMS = T
-end)
-
-LightingTab:AddDropdown(
-	"MaterialD",
-	{ Values = { "Default", "ForceField" }, Default = 1, Multi = false, Text = "Naterial:", Tooltip = "Arms Material" }
-):OnChanged(function()
-	if Options.MaterialD.Value == "Default" then
-		game:GetService("Workspace").Ignore.FPSArms.RightUpperArm.Material = "Fabric"
-		game:GetService("Workspace").Ignore.FPSArms.RightLowerArm.Material = "SmoothPlastic"
-		game:GetService("Workspace").Ignore.FPSArms.RightHand.Material = "SmoothPlastic"
-		game:GetService("Workspace").Ignore.FPSArms.LeftUpperArm.Material = "Fabric"
-		game:GetService("Workspace").Ignore.FPSArms.LeftLowerArm.Material = "SmoothPlastic"
-		game:GetService("Workspace").Ignore.FPSArms.LeftHand.Material = "SmoothPlastic"
-	end
-	if Options.MaterialD.Value == "ForceField" then
-		game:GetService("Workspace").Ignore.FPSArms.RightUpperArm.Material = "ForceField"
-		game:GetService("Workspace").Ignore.FPSArms.RightLowerArm.Material = "ForceField"
-		game:GetService("Workspace").Ignore.FPSArms.RightHand.Material = "ForceField"
-		game:GetService("Workspace").Ignore.FPSArms.LeftUpperArm.Material = "ForceField"
-		game:GetService("Workspace").Ignore.FPSArms.LeftLowerArm.Material = "ForceField"
-		game:GetService("Workspace").Ignore.FPSArms.LeftHand.Material = "ForceField"
-	end
-end)
-
-LightingTab:AddInput(
-	"",
-	{
-		Default = "rbxassetid://11414633855",
-		Numeric = false,
-		Finished = true,
-		Text = "Texture ID:",
-		Placeholder = "rbxassetid://...",
-	}
-):OnChanged(function(TextureID)
-	game:GetService("Workspace").Ignore.FPSArms.LeftUpperArm.TextureID = TextureID
-	game:GetService("Workspace").Ignore.FPSArms.LeftLowerArm.TextureID = TextureID
-	game:GetService("Workspace").Ignore.FPSArms.LeftHand.TextureID = TextureID
-	game:GetService("Workspace").Ignore.FPSArms.RightUpperArm.TextureID = TextureID
-	game:GetService("Workspace").Ignore.FPSArms.RightLowerArm.TextureID = TextureID
-	game:GetService("Workspace").Ignore.FPSArms.RightHand.TextureID = TextureID
-end)
---------------------------------------------------------------------------------------------------
-
-MiscTab:AddToggle("", { Text = "Jump Crouch", Default = false }):AddKeyPicker(
-	"JumpCrouchKey",
-	{ Default = "B", SyncToggleState = true, Mode = "Toggle", Text = "Jump Crouch", NoUI = false }
-)
-local stoprun = false
-task.spawn(function()
-	while true do
-		local state = Options.JumpCrouchKey:GetState()
-		if state then
-			keypress(0x57)
-			keypress(0x10)
-			wait(0.05)
-			keypress(0x43)
-			keypress(0x20)
-			keyrelease(0x20)
-			wait(0.5)
-			keyrelease(0x43)
-			wait(1)
-		end
-		if Library.Unloaded then
-			break
-		end
-		wait()
-	end
-end)
-task.spawn(function()
-	while task.wait() do
-		local state = Options.JumpCrouchKey:GetState()
-		if not state then
-			if stoprun then
-				keyrelease(0x57)
-				keyrelease(0x10)
-				stoprun = false
-			end
-		else
-			stoprun = true
-		end
-	end
-end)
-
-MiscTab:AddToggle("LootAll", { Text = "Loot All", Default = false })
-	:AddKeyPicker(
-		"LootAllKey",
-		{ Default = "P", SyncToggleState = true, Mode = "Toggle", Text = "Loot All", NoUI = false }
-	)
-
-Toggles.LootAll:OnChanged(function()
-	for i = 1, 20 do
-		game:GetService("Players").LocalPlayer.RemoteEvent:FireServer(12, i, true)
-	end
-end)
-
-local XRAY22 = false
-MiscTab:AddToggle("XRAY", { Text = "XRAY", Default = false })
-	:AddKeyPicker("XRAYKey", { Default = "Z", SyncToggleState = true, Mode = "Toggle", Text = "XRAY", NoUI = false })
-	:OnChanged(function()
-		XRAY22 = Toggles.XRAY.Value
-		if XRAY22 then
-			for i, v in pairs(game:GetDescendants()) do
-				if v:FindFirstChild("Hitbox") then
-					v.Hitbox.Transparency = 0.6
+			if Toggles.cloudsremover.Value then
+				local v455 = (v0:FindFirstChildOfClass("Terrain")):FindFirstChildOfClass("Clouds");
+				if v455 then
+					v455.Parent = (State and CoreGui) or Terrain;
 				end
 			end
-		else
-			for i, v in pairs(game:GetDescendants()) do
-				if v:FindFirstChild("Hitbox") then
-					v.Hitbox.Transparency = 0
+			if (Toggles.visorremover.Value and Visor) then
+				Visor.Visible = false;
+			end
+			if (Toggles.CEnabled.Value and Toggles.SnapEnabled.Value and GetTargetS()) then
+				local v457, v458 = v1:worldToViewportPoint((GetTargetS()).Position);
+				if v458 then
+					v43.From = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+					v43.To = Vector2.new(v457.X, v457.Y);
+					v43.Visible = true;
+				else
+					v43.Visible = false;
+				end
+			else
+				v43.Visible = false;
+			end
+			if (Toggles.CEnabled.Value and Toggles.SnapEnabled2.Value and GetTargetA()) then
+				local v460, v461 = v1:worldToViewportPoint((GetTargetA()).Position);
+				if v461 then
+					v50.From = Vector2.new(game.workspace.CurrentCamera.ViewportSize.X / 2, game.workspace.CurrentCamera.ViewportSize.Y / 2);
+					v50.To = Vector2.new(v460.X, v460.Y);
+					v50.Visible = true;
+				else
+					v50.Visible = false;
+				end
+			else
+				v50.Visible = false;
+			end
+			local v333 = (game:GetService("Workspace")).Camera:FindFirstChild("ViewModel");
+			if (Toggles.VisualsEnabled.Value and (v333 ~= nil)) then
+				for v571, v572 in pairs((game:GetService("Workspace")).Camera.ViewModel:GetDescendants()) do
+					if Toggles.ArmChamsEnabled.Value then
+						if (v572.ClassName == "MeshPart") then
+							if ((v572.Parent.Name == "WastelandShirt") or (v572.Parent.Name == "GhillieTorso") or (v572.Parent.Name == "CivilianPants") or (v572.Parent.Name == "CamoShirt") or (v572.Parent.Name == "HandWraps") or (v572.Parent.Name == "CombatGloves")) then
+								v572.Transparency = 1;
+							end
+						end
+						if (v572.ClassName == "MeshPart") then
+							if ((v572.Name == "LeftHand") or (v572.Name == "LeftLowerArm") or (v572.Name == "LeftUpperArm") or (v572.Name == "RightHand") or (v572.Name == "RightLowerArm") or (v572.Name == "RightUpperArm")) then
+								v572.Material = Options.ArmChamsMat.Value;
+								v572.Color = Options.ArmChamsColor.Value;
+							end
+						end
+						if (v572.ClassName == "Part") then
+							if ((v572.Name == "AimPartCanted") or (v572.Name == "AimPart")) then
+								v572.Size = Vector3.new(0, 0, 0);
+								v572.Transparency = 1;
+							end
+						end
+					end
+				end
+				if Toggles.GunChamsEnabled.Value then
+					for v750, v751 in pairs((game:GetService("Workspace")).Camera.ViewModel.Item:GetDescendants()) do
+						if ((v751.ClassName == "MeshPart") or (v751.ClassName == "Part")) then
+							v751.Material = Options.GunChamsMat.Value;
+							v751.Color = Options.GunChamsColor.Value;
+						end
+						if v751:FindFirstChild("SurfaceAppearance") then
+							v751.SurfaceAppearance:Destroy();
+						end
+					end
 				end
 			end
-		end
-	end)
-
---// UI Settings \\--
-local GameID = Tabs.UISettings:AddLeftGroupbox("Game")
-
-GameID:AddInput(
-	"GameID_Check",
-	{ Default = "Game ID", Numeric = true, Finished = false, Text = "Game ID", Placeholder = "Game ID Here" }
-)
-GameID:AddButton("Join Game", function()
-	game:GetService("TeleportService"):Teleport(Options.GameID_Check.Value, plr)
-end)
-
-local MenuGroup = Tabs.UISettings:AddRightGroupbox("Menu")
-
-MenuGroup:AddLabel("" .. game:GetService("Players").LocalPlayer.PlayerGui.GameUI.ServerInfo.Text .. "", true)
-MenuGroup:AddLabel(' Made By:<font color="#321091">Anth</font>', true)
-
-MenuGroup:AddButton("Unload Script", function()
-	Library:Unload()
-	for i, v in pairs(Toggles) do
-		v:SetValue(false)
-		Library:Notify("Unloaded!", 1)
-	end
-end)
-
-MenuGroup:AddButton("Panic Button", function()
-	for i, v in pairs(Toggles) do
-		v:SetValue(false)
-		Library:Notify("Panic Button!", 1)
-	end
-end)
-
-MenuGroup:AddButton("Rejoin Server", function()
-	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
-	Library:Notify("Rejoining Server!", 30)
-end)
-
-MenuGroup:AddButton("Copy Join Code", function()
-	setclipboard(
-		("game:GetService('TeleportService'):TeleportToPlaceInstance(%s, '%s')"):format(game.PlaceId, game.JobId)
-	)
-	Library:Notify("Copied Join Code!", 5)
-end)
-
-MenuGroup:AddButton("Copy Discord", function()
-	if pcall(setclipboard, "https://discord.gg/RZ9EE5Hb") then
-		Library:Notify("Successfully copied discord link to your clipboard!", 5)
-	end
-end)
-
-MenuGroup:AddToggle("WatermarkToggle", { Text = "Watermark", Default = false, Tooltip = nil })
-Toggles.WatermarkToggle:OnChanged(function()
-	Library:SetWatermark("Patware")
-	Library:SetWatermarkVisibility(Toggles.WatermarkToggle.Value)
-end)
-
-MenuGroup:AddToggle("UISettings_KeybindFrameVisibility", { Text = "Keybind", Default = true }):OnChanged(function()
-	Library.KeybindFrame.Visible = Toggles.UISettings_KeybindFrameVisibility.Value
-end)
-
-MenuGroup:AddLabel("Menu Keybind"):AddKeyPicker("MenuKeybind", { Default = "End", NoUI = true, Text = "Menu keybind" })
-Library.ToggleKeybind = Options.MenuKeybind
-
---// Save manager
-SaveManager:SetLibrary(Library)
-SaveManager:SetFolder("Astral/folder")
-SaveManager:BuildConfigSection(Tabs.UISettings)
-SaveManager:IgnoreThemeSettings()
-
---// Theme manager
-ThemeManager:SetLibrary(Library)
-ThemeManager:SetFolder("Astral/themes")
-ThemeManager:ApplyToTab(Tabs.UISettings)
-
---Wrapping function - needed to unload(Keep at end of script)
-loadstring(
-	game:HttpGet(
-		"https://raw.githubusercontent.com/EIOlmqV6v1owgJBEoqj5lK9p01SFE2THpxcOnvX/LinoriaBurnEdition/main/LoaderManager.lua"
-	)
-)
-
-Library:Notify("30 minute timer has started, If your not on a fresh acc anti ban may not work.", 5)
-task.wait(1500)
-Library:Notify("Initiated Timer Bypass Please Wait", 5)
-task.wait(60)
-Library:Notify("Bypassed Timer If It Dosent Work Then Please Report", 5)
-local old
-old = hookfunction(tick, function()
-	if true then
-		return 0
-	end
-	return old()
-end)
-local old
-old = hookfunction(getrenv().tick, function()
-	if true then
-		return 0
-	end
-	return old()
-end)
+		end);
+		task.spawn(function()
+			function sandbox(v369, v370)
+				local v371 = getfenv(v370);
+				local v372 = setmetatable({}, {__index=function(v463, v464)
+					if (v464 == "script") then
+						return v369;
+					else
+						return v371[v464];
+					end
+				end});
+				setfenv(v370, v372);
+				return v370;
+			end
+			cors = {};
+			mas = Instance.new("Model", game:GetService("Lighting"));
+			LocalScript0 = Instance.new("LocalScript");
+			LocalScript0.Name = "FreeCamera";
+			LocalScript0.Parent = mas;
+			table.insert(cors, sandbox(LocalScript0, function()
+				local v373 = math.pi;
+				local v374 = math.abs;
+				local v375 = math.clamp;
+				local v376 = math.exp;
+				local v377 = math.rad;
+				local v378 = math.sign;
+				local v379 = math.sqrt;
+				local v380 = math.tan;
+				local v381 = game:GetService("ContextActionService");
+				local v382 = game:GetService("Players");
+				local v383 = game:GetService("RunService");
+				local v384 = game:GetService("StarterGui");
+				local v385 = game:GetService("UserInputService");
+				local v386 = v382.LocalPlayer;
+				if not v386 then
+					(v382:GetPropertyChangedSignal("LocalPlayer")):Wait();
+					v386 = v382.LocalPlayer;
+				end
+				local v387 = workspace.CurrentCamera;
+				(workspace:GetPropertyChangedSignal("CurrentCamera")):Connect(function()
+					local v465 = workspace.CurrentCamera;
+					if v465 then
+						v387 = v465;
+					end
+				end);
+				local v388 = Enum.ContextActionPriority.Low.Value;
+				local v389 = Enum.ContextActionPriority.High.Value;
+				local v390 = {Enum.KeyCode.LeftShift,Enum.KeyCode.P};
+				local v391 = Vector3.new(1, 1, 1) * 64;
+				local v392 = Vector2.new(0.75, 1) * 8;
+				local v393 = 300;
+				local v394 = v377(90);
+				local v395 = 1.5;
+				local v396 = 1;
+				local v397 = 4;
+				local v398 = {};
+				do
+					v398.__index = v398;
+					v398.new = function(v574, v575)
+						local v576 = setmetatable({}, v398);
+						v576.f = v574;
+						v576.p = v575;
+						v576.v = v575 * 0;
+						return v576;
+					end;
+					v398.Update = function(v580, v581, v582)
+						local v583 = v580.f * 2 * v373;
+						local v584 = v580.p;
+						local v585 = v580.v;
+						local v586 = v582 - v584;
+						local v587 = v376(-v583 * v581);
+						local v588 = v582 + (((v585 * v581) - (v586 * ((v583 * v581) + 1))) * v587);
+						local v589 = ((v583 * v581 * ((v586 * v583) - v585)) + v585) * v587;
+						v580.p = v588;
+						v580.v = v589;
+						return v588;
+					end;
+					v398.Reset = function(v592, v593)
+						v592.p = v593;
+						v592.v = v593 * 0;
+					end;
+				end
+				local v399 = Vector3.new();
+				local v400 = Vector2.new();
+				local v401 = 0;
+				local v402 = v398.new(v395, Vector3.new());
+				local v403 = v398.new(v396, Vector2.new());
+				local v404 = v398.new(v397, 0);
+				local v405 = {};
+				do
+					local v470;
+					do
+						local v596 = 2;
+						local v597 = 0.15;
+						local function v598(v678)
+							return (v376(v596 * v678) - 1) / (v376(v596) - 1);
+						end
+						local function v599(v679)
+							return v598((v679 - v597) / (1 - v597));
+						end
+						function v470(v680)
+							return v378(v680) * v375(v599(v374(v680)), 0, 1);
+						end
+					end
+					local v471 = {ButtonX=0,ButtonY=0,DPadDown=0,DPadUp=0,ButtonL2=0,ButtonR2=0,Thumbstick1=Vector2.new(),Thumbstick2=Vector2.new()};
+					local v472 = {W=0,A=0,S=0,D=0,E=0,Q=0,U=0,H=0,J=0,K=0,I=0,Y=0,Up=0,Down=0,LeftShift=0,RightShift=0};
+					local v473 = {Delta=Vector2.new(),MouseWheel=0};
+					local v474 = Vector3.new(1, 1, 1);
+					local v475 = Vector3.new(1, 1, 1);
+					local v476 = Vector2.new(1, 1) * (v373 / 64);
+					local v477 = Vector2.new(1, 1) * (v373 / 8);
+					local v478 = 1;
+					local v479 = 0.25;
+					local v480 = 0.75;
+					local v481 = 0.25;
+					local v482 = 1;
+					v405.Vel = function(v600)
+						v482 = v375(v482 + (v600 * (v472.Up - v472.Down) * v480), 0.01, 4);
+						local v601 = Vector3.new(v470(v471.Thumbstick1.x), v470(v471.ButtonR2) - v470(v471.ButtonL2), v470(-v471.Thumbstick1.y)) * v474;
+						local v602 = Vector3.new(((v472.D - v472.A) + v472.K) - v472.H, ((v472.E - v472.Q) + v472.I) - v472.Y, ((v472.S - v472.W) + v472.J) - v472.U) * v475;
+						local v603 = v385:IsKeyDown(Enum.KeyCode.LeftShift) or v385:IsKeyDown(Enum.KeyCode.RightShift);
+						return (v601 + v602) * v482 * ((v603 and v481) or 1);
+					end;
+					v405.Pan = function(v604)
+						local v605 = Vector2.new(v470(v471.Thumbstick2.y), v470(-v471.Thumbstick2.x)) * v477;
+						local v606 = v473.Delta * v476;
+						v473.Delta = Vector2.new();
+						return v605 + v606;
+					end;
+					v405.Fov = function(v608)
+						local v609 = (v471.ButtonX - v471.ButtonY) * v479;
+						local v610 = v473.MouseWheel * v478;
+						v473.MouseWheel = 0;
+						return v609 + v610;
+					end;
+					do
+						local function v612(v681, v682, v683)
+							v472[v683.KeyCode.Name] = ((v682 == Enum.UserInputState.Begin) and 1) or 0;
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v613(v685, v686, v687)
+							v471[v687.KeyCode.Name] = ((v686 == Enum.UserInputState.Begin) and 1) or 0;
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v614(v689, v690, v691)
+							local v692 = v691.Delta;
+							v473.Delta = Vector2.new(-v692.y, -v692.x);
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v615(v694, v695, v696)
+							v471[v696.KeyCode.Name] = v696.Position;
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v616(v699, v700, v701)
+							v471[v701.KeyCode.Name] = v701.Position.z;
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v617(v704, v705, v706)
+							v473[v706.UserInputType.Name] = -v706.Position.z;
+							return Enum.ContextActionResult.Sink;
+						end
+						local function v618(v708)
+							for v752, v753 in pairs(v708) do
+								v708[v752] = v753 * 0;
+							end
+						end
+						v405.StartCapture = function()
+							v381:BindActionAtPriority("FreecamKeyboard", v612, false, v389, Enum.KeyCode.W, Enum.KeyCode.U, Enum.KeyCode.A, Enum.KeyCode.H, Enum.KeyCode.S, Enum.KeyCode.J, Enum.KeyCode.D, Enum.KeyCode.K, Enum.KeyCode.E, Enum.KeyCode.I, Enum.KeyCode.Q, Enum.KeyCode.Y, Enum.KeyCode.Up, Enum.KeyCode.Down);
+							v381:BindActionAtPriority("FreecamMousePan", v614, false, v389, Enum.UserInputType.MouseMovement);
+							v381:BindActionAtPriority("FreecamMouseWheel", v617, false, v389, Enum.UserInputType.MouseWheel);
+							v381:BindActionAtPriority("FreecamGamepadButton", v613, false, v389, Enum.KeyCode.ButtonX, Enum.KeyCode.ButtonY);
+							v381:BindActionAtPriority("FreecamGamepadTrigger", v616, false, v389, Enum.KeyCode.ButtonR2, Enum.KeyCode.ButtonL2);
+							v381:BindActionAtPriority("FreecamGamepadThumbstick", v615, false, v389, Enum.KeyCode.Thumbstick1, Enum.KeyCode.Thumbstick2);
+						end;
+						v405.StopCapture = function()
+							v482 = 1;
+							v618(v471);
+							v618(v472);
+							v618(v473);
+							v381:UnbindAction("FreecamKeyboard");
+							v381:UnbindAction("FreecamMousePan");
+							v381:UnbindAction("FreecamMouseWheel");
+							v381:UnbindAction("FreecamGamepadButton");
+							v381:UnbindAction("FreecamGamepadTrigger");
+							v381:UnbindAction("FreecamGamepadThumbstick");
+						end;
+					end
+				end
+				local function v406(v486)
+					local v487 = 0.1;
+					local v488 = v387.ViewportSize;
+					local v489 = 2 * v380(v401 / 2);
+					local v490 = (v488.x / v488.y) * v489;
+					local v491 = v486.rightVector;
+					local v492 = v486.upVector;
+					local v493 = v486.lookVector;
+					local v494 = Vector3.new();
+					local v495 = 512;
+					for v621 = 0, 1, 0.5 do
+						for v709 = 0, 1, 0.5 do
+							local v710 = (v621 - 0.5) * v490;
+							local v711 = (v709 - 0.5) * v489;
+							local v712 = ((v491 * v710) - (v492 * v711)) + v493;
+							local v713 = v486.p + (v712 * v487);
+							local v714, v715 = workspace:FindPartOnRay(Ray.new(v713, v712.unit * v495));
+							local v716 = (v715 - v713).magnitude;
+							if (v495 > v716) then
+								v495 = v716;
+								v494 = v712.unit;
+							end
+						end
+					end
+					return v493:Dot(v494) * v495;
+				end
+				local function v407(v496)
+					local v497 = v402:Update(v496, v405.Vel(v496));
+					local v498 = v403:Update(v496, v405.Pan(v496));
+					local v499 = v404:Update(v496, v405.Fov(v496));
+					local v500 = v379(v380(v377(35)) / v380(v377(v401 / 2)));
+					v401 = v375(v401 + (v499 * v393 * (v496 / v500)), 1, 120);
+					v400 = v400 + (v498 * v392 * (v496 / v500));
+					v400 = Vector2.new(v375(v400.x, -v394, v394), v400.y % (2 * v373));
+					local v501 = CFrame.new(v399) * CFrame.fromOrientation(v400.x, v400.y, 0) * CFrame.new(v497 * v391 * v496);
+					v399 = v501.p;
+					v387.CFrame = v501;
+					v387.Focus = v501 * CFrame.new(0, 0, -v406(v501));
+					v387.FieldOfView = v401;
+				end
+				local v408 = {};
+				do
+					local v506;
+					local v507;
+					local v508;
+					local v509;
+					local v510;
+					local v511;
+					local v512 = {};
+					local v513 = {Backpack=true,Chat=true,Health=true,PlayerList=true};
+					local v514 = {BadgesNotificationsActive=true,PointsNotificationsActive=true};
+					v408.Push = function()
+						for v717 in pairs(v513) do
+							v513[v717] = v384:GetCoreGuiEnabled(Enum.CoreGuiType[v717]);
+							v384:SetCoreGuiEnabled(Enum.CoreGuiType[v717], false);
+						end
+						for v719 in pairs(v514) do
+							v514[v719] = v384:GetCore(v719);
+							v384:SetCore(v719, false);
+						end
+						local v622 = v386:FindFirstChildOfClass("PlayerGui");
+						if v622 then
+							for v796, v797 in pairs(v622:GetChildren()) do
+								if (v797:IsA("ScreenGui") and v797.Enabled) then
+									v512[#v512 + 1] = v797;
+									v797.Enabled = false;
+								end
+							end
+						end
+						v511 = v387.FieldOfView;
+						v387.FieldOfView = 70;
+						v508 = v387.CameraType;
+						v387.CameraType = Enum.CameraType.Custom;
+						v507 = v387.CameraSubject;
+						v387.CameraSubject = nil;
+						v510 = v387.CFrame;
+						v509 = v387.Focus;
+						v506 = v385.MouseIconEnabled;
+						v385.MouseIconEnabled = false;
+						mouseBehavior = v385.MouseBehavior;
+						v385.MouseBehavior = Enum.MouseBehavior.Default;
+					end;
+					v408.Pop = function()
+						for v721, v722 in pairs(v513) do
+							v384:SetCoreGuiEnabled(Enum.CoreGuiType[v721], v722);
+						end
+						for v723, v724 in pairs(v514) do
+							v384:SetCore(v723, v724);
+						end
+						for v725, v726 in pairs(v512) do
+							if v726.Parent then
+								v726.Enabled = true;
+							end
+						end
+						v387.FieldOfView = v511;
+						v511 = nil;
+						v387.CameraType = v508;
+						v508 = nil;
+						v387.CameraSubject = v507;
+						v507 = nil;
+						v387.CFrame = v510;
+						v510 = nil;
+						v387.Focus = v509;
+						v509 = nil;
+						v385.MouseIconEnabled = v506;
+						v506 = nil;
+						v385.MouseBehavior = mouseBehavior;
+						mouseBehavior = nil;
+					end;
+				end
+				local function v409()
+					local v517 = v387.CFrame;
+					v400 = Vector2.new(v517:toEulerAnglesYXZ());
+					v399 = v517.p;
+					v401 = v387.FieldOfView;
+					v402:Reset(Vector3.new());
+					v403:Reset(Vector2.new());
+					v404:Reset(0);
+					v408.Push();
+					v383:BindToRenderStep("Freecam", Enum.RenderPriority.Camera.Value, v407);
+					v405.StartCapture();
+				end
+				local function v410()
+					v405.StopCapture();
+					v383:UnbindFromRenderStep("Freecam");
+					v408.Pop();
+				end
+				do
+					local v520 = false;
+					local function v521()
+						if v520 then
+							v410();
+						else
+							v409();
+						end
+						v520 = not v520;
+					end
+					local function v522(v639)
+						for v727 = 1, #v639 - 1, 1 do
+							if not v385:IsKeyDown(v639[v727]) then
+								return;
+							end
+						end
+						v521();
+					end
+					local function v523(v640, v641, v642)
+						if (v641 == Enum.UserInputState.Begin) then
+							if (v642.KeyCode == v390[#v390]) then
+								v522(v390);
+							end
+						end
+						return Enum.ContextActionResult.Pass;
+					end
+					v381:BindActionAtPriority("FreecamToggle", v523, false, v388, v390[#v390]);
+				end
+			end));
+			for v411, v412 in pairs(mas:GetChildren()) do
+				v412.Parent = (game:GetService("Players")).LocalPlayer.PlayerGui;
+				pcall(function()
+					v412:MakeJoints();
+				end);
+			end
+			mas:Destroy();
+			for v415, v416 in pairs(cors) do
+				spawn(function()
+					pcall(v416);
+				end);
+			end
+		end);
+		coroutine.resume(coroutine.create(function()
+			while wait(1) do
+				Library:SetWatermark("Crumbleware | v" .. CrumbleWare .. " | Beta | " .. FPS .. " |");
+				Library:SetWatermarkVisibility(Toggles.watermark.Value);
+				FPS = 0;
+			end
+		end));
+		SaveManager:LoadAutoloadConfig();
+	end);
+end)(...);
